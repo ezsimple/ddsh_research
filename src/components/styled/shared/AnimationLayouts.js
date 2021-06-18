@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import aniKey from '~/styledComponents/Keyframes';
-import { Div } from '~/styledComponents/shared/Layouts';
+import { Div } from './Layouts';
+import aniKey from '../Keyframes';
 
 export const HeartBeat = styled(Div)`
   animation: ${(props) => props.play && aniKey.heartBeat}
