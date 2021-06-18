@@ -28,7 +28,7 @@ class AppLayout extends React.PureComponent {
               textAlign: 'right',
             }}>
             <Flex>
-              <Div fontSize={12} bold ml={20}>
+              <Div fontSize={14} bold ml={5}>
                 {this.state.title}
               </Div>
               <Right>
@@ -37,7 +37,7 @@ class AppLayout extends React.PureComponent {
                   style={{
                     fontSize: '120%',
                     color: 'black',
-                    paddingRight: '20px',
+                    paddingRight: '5px',
                   }}
                 />
               </Right>
@@ -46,8 +46,8 @@ class AppLayout extends React.PureComponent {
           <Content
             className="site-layout-background"
             style={{
-              margin: '24px 16px',
-              padding: 24,
+              margin: '5px 5px',
+              padding: 0,
             }}>
             {this.props.children}
           </Content>
@@ -59,6 +59,7 @@ class AppLayout extends React.PureComponent {
         </Layout>
         <Sider
           theme="light"
+          width={190}
           breakpoint={'lg'}
           trigger={null}
           onBreakpoint={(broken) => {
@@ -72,6 +73,7 @@ class AppLayout extends React.PureComponent {
             overflow: 'auto',
             // position: 'fixed', // 삼선버튼이 사라집니다.
             left: 0,
+            zIndex: 1,
           }}>
           <div className="logo" style={{ height: '64px' }}></div>
           {/* 프로그램 메뉴정의 */}

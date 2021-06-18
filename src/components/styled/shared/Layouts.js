@@ -15,11 +15,11 @@ import {
 const defaultStyle = css`
   width: ${(props) => props.width && getValue(props.width)};
   height: ${(props) => props.height && getValue(props.height)};
-  font-size: ${(props) => getValue(props.fontSize) || 'inherit'};
   line-height: ${(props) => getValue(props.lineHeight)};
+  font-size: ${(props) => getValue(props.fontSize) || 'inherit'};
   font-weight: ${(props) => (props.bold ? 'bold' : 'inherit')};
-  font-weight: ${(props) => getValue(props.fontWeight) || 'inherit'};
-  ${(props) => props.fw && `font-weight: ${props.fw};`};
+  ${(props) => props.fontSize && `font-weight: ${props.fontSize};`};
+  ${(props) => props.fontWeight && `font-weight: ${props.fontWeight};`};
   ${(props) => props.bold && `font-weight: bold;`}
   ${(props) => props.lighter && `font-weight: lighter;`}
 

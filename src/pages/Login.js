@@ -1,6 +1,6 @@
-import React from 'react';
-import { Container } from 'reactstrap';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { rgba } from 'polished';
+import React from 'react';
 import {
   BgImgDiv,
   Button,
@@ -9,7 +9,6 @@ import {
   Input,
 } from '../components/styled/shared';
 import backGroundImage from '../images/넙치.png';
-import { rgba } from 'polished';
 
 const Login = (props) => {
   return (
@@ -32,9 +31,9 @@ const Login = (props) => {
             textAlign="center"
             mb={20}>
             질병 조기 감지 시스템
-            <div style={{ fontWeight: 100, fontSize: 14 }}>
+            <Div fontSize={16} fontWeight={100}>
               넙치 행동 생리 기반
-            </div>
+            </Div>
           </Div>
 
           <Flex
@@ -66,7 +65,7 @@ const Login = (props) => {
               />
             </Div>
             <Div mt={10} width="90%">
-              <Button fg="white" bg="blue" width="100% !important">
+              <Button fg="white" bg="blue" width="100%" rounded={5}>
                 로그인
               </Button>
             </Div>
