@@ -8,3 +8,7 @@ export const HrThin = styled(Hr)`
 export const HrThick = styled(Hr)`
   border-width: 4px;
 `;
+
+export const HrThickX2 = styled(Hr)`
+  border-width: 10px;
+`;

@@ -10,10 +10,14 @@ import {
   Sticky,
   Fixed,
   Mask,
+  ShadowBox,
+  Coupon,
+  Spin,
   BgImgDiv,
 } from './Layouts';
 import { A, Link } from './Links';
 import { TriangleUp, TriangleDown } from './Shapes';
+import AnimationLayouts from './AnimationLayouts';
 
 export {
   Button,
@@ -27,9 +31,13 @@ export {
   Sticky,
   Fixed,
   Mask,
+  ShadowBox,
+  Coupon,
+  Spin,
   A,
   Link,
   TriangleUp,
   TriangleDown,
   BgImgDiv,
+  AnimationLayouts,
 };

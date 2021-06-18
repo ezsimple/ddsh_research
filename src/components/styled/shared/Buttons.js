@@ -1,5 +1,13 @@
 import styled, { css } from 'styled-components';
-import { margin, noti, notiNew, padding } from '../CoreStyles';
+import {
+  margin,
+  padding,
+  sticky,
+  fixed,
+  noti,
+  notiNew,
+  pseudo,
+} from '../CoreStyles';
 import { color } from '../Properties';
 import { getValue } from '../Util';
 
@@ -8,13 +16,12 @@ import { Button as button } from 'antd';
 // Override
 const BasicButton = styled(button)`
   box-sizing: border-box;
-  padding: 0 6px;
-  height: 40px;
+  padding: ${getValue(5)} ${getValue(6)};
 
   display: ${(props) => props.display || 'inline-block'};
   color: ${(props) => color[props.fg] || 'inherit'};
   background-color: ${(props) =>
-    props.bg ? `${color[props.bg]}` : `${color.white}`};
+    props.bg ? `${color[props.bg] || props.bg}` : `${color.white}`};
   border: ${(props) => (props.bc ? `1px solid ${color[props.bc]}` : '0')};
   font-size: ${(props) =>
     props.fontSize ? `${getValue(props.fontSize)}` : `inherit`};
@@ -34,8 +41,7 @@ const BasicButton = styled(button)`
     css`
       font-weight: bold;
     `}
-    border-radius: ${(props) =>
-    getValue(props.rounded) || getValue(5)}!important;
+  border-radius: ${(props) => getValue(props.rounded) || getValue(2)}!important;
   ${(props) =>
     props.block &&
     css`
@@ -49,8 +55,8 @@ const BasicButton = styled(button)`
 
   ${(props) => props.noti && noti};
   ${(props) => props.notiNew && notiNew};
-  ${/* pseudo.hover */ ''};
-  ${/* pseudo.active */ ''};
+  ${pseudo.hover};
+  ${pseudo.active};
 `;
 
 //override

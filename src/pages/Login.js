@@ -8,6 +8,7 @@ import {
   Input,
 } from '../components/styled/shared';
 import backGroundImage from '../images/넙치.png';
+import { rgba } from 'polished';
 
 const Login = (props) => {
   return (
@@ -34,8 +35,17 @@ const Login = (props) => {
             </div>
           </Div>
 
-          <Div p={10} radius={5} height={150} width="85%" bg="white" mb={80}>
-            <Div pb={5}>
+          <Flex
+            column="column"
+            p={0}
+            radius={5}
+            height={250}
+            width="95%"
+            mb={10}
+            style={{
+              background: rgba(136, 198, 235, 0.5),
+            }}>
+            <Div width="80%">
               <Input
                 size="large"
                 placeholder="아이디"
@@ -43,7 +53,7 @@ const Login = (props) => {
                 allowClear={true}
               />
             </Div>
-            <Div pt={5}>
+            <Div mt={10} width="80%">
               <Input
                 type="password"
                 size="large"
@@ -52,12 +62,12 @@ const Login = (props) => {
                 allowClear={true}
               />
             </Div>
-            <Div pt={10}>
-              <Button fg="white" bg="blue" width="100%">
+            <Div mt={10} width="80%">
+              <Button fg="white" bg="blue" width="100% !important">
                 로그인
               </Button>
             </Div>
-          </Div>
+          </Flex>
         </Flex>
       </BgImgDiv>
     </React.Fragment>
