@@ -70,13 +70,13 @@ const defaultStyle = css`
   min-width: ${(props) => getValue(props.minWidth)};
   max-height: ${(props) => getValue(props.maxHeight)};
   min-height: ${(props) => getValue(props.minHeight)};
-  border-radius: ${(props) => getValue(props.rounded)}
   top: ${(props) => getValue(props.top)};
   bottom: ${(props) => getValue(props.bottom)};
   left: ${(props) => getValue(props.left)};
   right: ${(props) => getValue(props.right)};
 
   overflow: ${(props) => props.overflow};
+  border-radius: ${(props) => getValue(props.rounded)}
 
   ${(props) => props.noti && noti}
   ${(props) => props.notiNew && notiNew};
@@ -87,6 +87,7 @@ const defaultStyle = css`
     props.shadow === 'md' && 'box-shadow: 1px 1px 10px rgba(0,0,0,0.1);'};
   ${(props) =>
     props.shadow === 'lg' && 'box-shadow: 1px 1px 15px rgba(0,0,0,0.1);'};
+
 `;
 
 export const Div = styled.div`
@@ -105,13 +106,18 @@ export const Img = styled.img`
 `;
 
 export const Flex = styled(Div)`
-  display: 'flex'; // flex, inline-flex
+  display: ${(props) => props.display || 'flex'}; // flex, inline-flex
   align-items: ${(props) =>
     props.alignItems ||
     'center'}; // flex-start, flex-end, center, baseline, stretch
+  /* align-content: ${(props) =>
+    props.alignContent ||
+    'center'} // flex-start, flex-end, center, space-between, sapce-around, stretch */
   justify-content: ${(props) =>
     props.justifyContent ||
     'center'}; // flex-start, flex-end, center, space-between, space-around
+  /* flex-direction: ${(props) =>
+    props.flexDirection}; //test 후 삭제(아래 props 로 대체함) */
   flex-wrap: ${(props) => props.flexWrap}; // wrap, wrap-reverse, nowrap
   flex-direction: ${(props) =>
     props.column && 'column'}; // row, row-reverse, column, column-reverse

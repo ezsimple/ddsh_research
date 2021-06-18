@@ -1,5 +1,6 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import React from 'react';
+import { Container } from 'reactstrap';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import {
   BgImgDiv,
   Button,
@@ -17,13 +18,14 @@ const Login = (props) => {
         <Flex
           column="column"
           justifyContent="space-between"
-          position="relative"
+          relative
           height="100vh"
           width="100%"
           pt={60}
           mt={0}>
           <Div
             display="block"
+            relative
             fg="white"
             bold
             fontSize={24}
@@ -36,16 +38,17 @@ const Login = (props) => {
           </Div>
 
           <Flex
-            column="column"
+            column
+            relative
             p={0}
-            radius={5}
             height={250}
             width="95%"
             mb={10}
+            rounded={5}
             style={{
               background: rgba(136, 198, 235, 0.5),
             }}>
-            <Div width="80%">
+            <Div width="90%">
               <Input
                 size="large"
                 placeholder="아이디"
@@ -53,7 +56,7 @@ const Login = (props) => {
                 allowClear={true}
               />
             </Div>
-            <Div mt={10} width="80%">
+            <Div mt={10} width="90%">
               <Input
                 type="password"
                 size="large"
@@ -62,7 +65,7 @@ const Login = (props) => {
                 allowClear={true}
               />
             </Div>
-            <Div mt={10} width="80%">
+            <Div mt={10} width="90%">
               <Button fg="white" bg="blue" width="100% !important">
                 로그인
               </Button>
