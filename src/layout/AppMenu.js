@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import {
   AimOutlined,
   AlertOutlined,
@@ -8,20 +9,19 @@ import {
   MonitorOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
-import React, { useEffect } from 'react';
-import { Div } from '../components/styled/shared';
 
-const AppMenu = (props) => {
+const AppMenu: React.FC = (props) => {
   const { location } = props;
 
   useEffect(() => {
+    // console.log('useEffectOnce');
     return fnSetTitle(location, props);
   });
 
   return (
     <Menu
       theme="light"
-      onClick={(e) => fnGoto(e, null, props)}
+      onClick={(e) => fnClickMenu(e, null, props)}
       // defaultSelectedKeys={this.state.selectedKeys}
       // defaultOpenKeys={this.state.openKeys}
       selectedKeys={[location.pathname]}
@@ -53,7 +53,17 @@ const AppMenu = (props) => {
 
 export default AppMenu;
 
+const fnClickMenu = (e, search, props) => {
+  // console.log(props);
+  const location = {
+    pathname: e.key,
+    search: search,
+  };
+  props.history.push(location);
+};
+
 const fnSetTitle = (location, props) => {
+  console.log(location.pathname);
   switch (location.pathname) {
     case '/dashboard':
       return props.setTitle('※ 대시보드');
@@ -69,13 +79,4 @@ const fnSetTitle = (location, props) => {
       return props.setTitle('※ 정보 수정');
     default:
   }
-};
-
-const fnGoto = (e, search, props) => {
-  console.log(props);
-  const location = {
-    pathname: e.key,
-    search: search,
-  };
-  props.history.push(location);
 };
