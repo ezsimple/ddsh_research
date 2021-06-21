@@ -9,6 +9,7 @@ import {
   Input,
 } from '../components/styled/shared';
 import backGroundImage from '../images/넙치.png';
+import { fnLink } from '../utils/RouteUtil';
 
 const Login = (props) => {
   return (
@@ -65,7 +66,12 @@ const Login = (props) => {
               />
             </Div>
             <Div mt={10} width="90%">
-              <Button fg="white" bg="blue" width="100%" rounded={5}>
+              <Button
+                fg="white"
+                bg="blue"
+                width="100%"
+                rounded={5}
+                onClick={() => fnLink(props, '/dashboard', null)}>
                 로그인
               </Button>
             </Div>

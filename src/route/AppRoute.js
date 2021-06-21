@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
 import AppLayout from '../layout/AppLayout';
-import AppRouteList from './AppRouteList';
 import { Login, Logout } from '../pages';
+import AppRouteList from './AppRouteList';
 
 const getRouteInfo = () => {
   const pathname = window.location.pathname;
