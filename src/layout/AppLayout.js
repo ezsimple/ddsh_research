@@ -21,6 +21,25 @@ class AppLayout extends React.PureComponent {
     this.setState({ visible: false });
   };
 
+  // 레이아웃 로딩시만 타이틀 변경
+  fnSetTitle = (location) => {
+    switch (location.pathname) {
+      case '/dashboard':
+        return this.setTitle('※ 대시보드');
+      case '/detection/action':
+        return this.setTitle('※ 실시간 행동 감지');
+      case '/stats/dispose':
+        return this.setTitle('※ 이상행동 분석 통계');
+      case '/alarm/setting':
+        return this.setTitle('※ 알림 설정');
+      case '/alarm/log':
+        return this.setTitle('※ 알림 로그');
+      case '/config/modify':
+        return this.setTitle('※ 정보 수정');
+      default:
+    }
+  };
+
   render() {
     return (
       <Layout>

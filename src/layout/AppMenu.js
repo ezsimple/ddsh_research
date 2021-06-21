@@ -62,8 +62,8 @@ const fnClickMenu = (e, search, props) => {
   props.history.push(location);
 };
 
+// 메뉴 클릭시만 타이틀 변경
 const fnSetTitle = (location, props) => {
-  console.log(location.pathname);
   switch (location.pathname) {
     case '/dashboard':
       return props.setTitle('※ 대시보드');
