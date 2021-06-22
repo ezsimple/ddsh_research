@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import { MenuOutlined } from '@ant-design/icons';
-import { Layout, Drawer } from 'antd';
+import { Layout, Drawer, Select } from 'antd';
 import { Div, Flex, Right } from '../components/styled/shared';
 import AppMenu from './AppMenu';
 import './AppLayout.css';
 
+const { Option } = Select;
 const { Header, Content, Footer, Sider } = Layout;
 
 const AppLayout: React.FC = (props) => {
@@ -34,7 +35,7 @@ const AppLayout: React.FC = (props) => {
         return setTitle('※ 대시보드');
       case '/action/detect':
         return setTitle('※ 실시간 행동 감지');
-      case '/stats/dispose':
+      case '/stats/anal':
         return setTitle('※ 이상행동 분석 통계');
       case '/alarm/setting':
         return setTitle('※ 알림 설정');
@@ -57,20 +58,39 @@ const AppLayout: React.FC = (props) => {
             textAlign: 'right',
             overflow: 'hidden',
           }}>
-          <Flex>
+          <Flex nowrap>
             <Div fontSize={16} bold ml={5}>
               {title}
             </Div>
             <Right>
+              <Select
+                allowClear
+                showSearch
+                bordered
+                // showArrow={false}
+                style={{ width: '120px' }}
+                placeholder="양식장 선택"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }>
+                <Option value="A">양식장A</Option>
+                <Option value="B">양식장B</Option>
+                <Option value="C">양식장C</Option>
+              </Select>
+            </Right>
+            <Div width={40} m={0} ml={0}>
               <MenuOutlined
                 onClick={onShow}
                 style={{
                   fontSize: '120%',
                   color: 'black',
                   paddingRight: '5px',
+                  marginLeft: '5px',
                 }}
               />
-            </Right>
+            </Div>
           </Flex>
         </Header>
         <Content

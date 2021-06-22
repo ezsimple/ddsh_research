@@ -35,7 +35,7 @@ const AppMenu: React.FC = (props) => {
       <Menu.Item key="/action/detect" icon={<MonitorOutlined />}>
         실시간 행동 감지
       </Menu.Item>
-      <Menu.Item key="/stats/dispose" icon={<AimOutlined />}>
+      <Menu.Item key="/stats/anal" icon={<AimOutlined />}>
         이상행동 분석 통계
       </Menu.Item>
       <Menu.Item key="/alarm/setting" icon={<AlertOutlined />}>

@@ -95,20 +95,7 @@ const Anal: React.FC = (props) => {
 
   return (
     <>
-      <Flex nowrap>
-        <Select
-          allowClear
-          showSearch
-          style={{ width: '50%' }}
-          placeholder="양식장 선택"
-          optionFilterProp="children"
-          filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }>
-          <Option value="A">양식장A</Option>
-          <Option value="B">양식장B</Option>
-          <Option value="C">양식장C</Option>
-        </Select>
+      <Flex nowrap mt={5}>
         <Select
           allowClear
           showSearch
@@ -122,8 +109,6 @@ const Anal: React.FC = (props) => {
           <Option value="A2">수조 A-2</Option>
           <Option value="A3">수조 A-3</Option>
         </Select>
-      </Flex>
-      <Flex nowrap mt={5}>
         <RangePicker width="100%" placeholder={['시작일자', '종료일자']} />
         <Right>
           <Button fg="white" bg="blue">

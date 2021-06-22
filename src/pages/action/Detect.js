@@ -45,24 +45,11 @@ const Detect: React.FC = (props) => {
 
   return (
     <>
-      <Flex nowrap>
+      <Div nowrap>
         <Select
           allowClear
           showSearch
-          style={{ width: '50%' }}
-          placeholder="양식장 선택"
-          optionFilterProp="children"
-          filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }>
-          <Option value="A">양식장A</Option>
-          <Option value="B">양식장B</Option>
-          <Option value="C">양식장C</Option>
-        </Select>
-        <Select
-          allowClear
-          showSearch
-          style={{ width: '50%' }}
+          style={{ width: '100%' }}
           placeholder="수조 선택"
           optionFilterProp="children"
           filterOption={(input, option) =>
@@ -72,7 +59,7 @@ const Detect: React.FC = (props) => {
           <Option value="A2">수조 A-2</Option>
           <Option value="A3">수조 A-3</Option>
         </Select>
-      </Flex>
+      </Div>
 
       <Div className="player-wrapper" mt={5} width="100%">
         <ReactPlayer
