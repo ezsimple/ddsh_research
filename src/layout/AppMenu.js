@@ -7,15 +7,15 @@ import {
   FileDoneOutlined,
   LogoutOutlined,
   MonitorOutlined,
+  CloseCircleOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 
 const AppMenu: React.FC = (props) => {
-  const { location } = props;
+  const { location, setTitle, onClose } = props;
 
   useEffect(() => {
-    // console.log('useEffectOnce');
-    return fnSetTitle(location, props);
+    setTitle(); // 최상단 메뉴이름 변경
   });
 
   return (
@@ -26,6 +26,9 @@ const AppMenu: React.FC = (props) => {
       // defaultOpenKeys={this.state.openKeys}
       selectedKeys={[location.pathname]}
       mode="inline">
+      <Menu.Item key="/close" icon={<CloseCircleOutlined />}>
+        닫기
+      </Menu.Item>
       <Menu.Item key="/dashboard" icon={<FileDoneOutlined />}>
         대시보드
       </Menu.Item>
@@ -54,29 +57,14 @@ const AppMenu: React.FC = (props) => {
 export default AppMenu;
 
 const fnClickMenu = (e, search, props) => {
-  // console.log(props);
+  const { onClose } = props;
+  if (e.key === '/close') {
+    return onClose();
+  }
+  onClose();
   const location = {
     pathname: e.key,
     search: search,
   };
   props.history.push(location);
-};
-
-// 메뉴 클릭시만 타이틀 변경
-const fnSetTitle = (location, props) => {
-  switch (location.pathname) {
-    case '/dashboard':
-      return props.setTitle('※ 대시보드');
-    case '/detection/action':
-      return props.setTitle('※ 실시간 행동 감지');
-    case '/stats/dispose':
-      return props.setTitle('※ 이상행동 분석 통계');
-    case '/alarm/setting':
-      return props.setTitle('※ 알림 설정');
-    case '/alarm/log':
-      return props.setTitle('※ 알림 로그');
-    case '/config/modify':
-      return props.setTitle('※ 정보 수정');
-    default:
-  }
 };
