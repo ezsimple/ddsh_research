@@ -32,7 +32,7 @@ const AppMenu: React.FC = (props) => {
       <Menu.Item key="/dashboard" icon={<FileDoneOutlined />}>
         대시보드
       </Menu.Item>
-      <Menu.Item key="/detection/action" icon={<MonitorOutlined />}>
+      <Menu.Item key="/action/detect" icon={<MonitorOutlined />}>
         실시간 행동 감지
       </Menu.Item>
       <Menu.Item key="/stats/dispose" icon={<AimOutlined />}>

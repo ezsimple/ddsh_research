@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Div, Flex, Right } from '../../components/styled/shared';
 import { Select, Checkbox } from 'antd';
 import ReactPlayer from 'react-player/lazy';
+import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import './Player.css'; // width:100% error fix
 
 const { Option } = Select;
@@ -10,11 +11,33 @@ const onEnded = () => {
   console.log('학습을 마쳤습니다');
 };
 
-const Action = (props) => {
+const Detect: React.FC = (props) => {
   const file =
     'http://210.92.91.216:3333/videos/1.%20%ED%81%AC%EB%A1%AC%EC%84%A4%EC%B9%98%20%EB%B0%A9%EB%B2%95.mp4';
 
   const [checked, setChecked] = useState(true);
+  const [defaultColDef, setDefaultColDef] = useState({
+    filter: true,
+    resizable: true,
+    sortable: true,
+    editable: false,
+    cellClass: 'text-center',
+    suppressSizeToFit: false,
+  });
+  const [rowData, setRowData] = useState([
+    {
+      no: 6,
+      detectTime: '2021-04-30 11:10:27',
+      waterTankNo: 'A_2',
+      detectType: '흑화',
+    },
+    {
+      no: 5,
+      detectTime: '2021-04-27 21:30:31',
+      waterTankNo: 'A_1',
+      detectType: '선회/입올림',
+    },
+  ]);
 
   const onChange = (e) => {
     setChecked(e.target.checked);
@@ -54,7 +77,10 @@ const Action = (props) => {
       <Div className="player-wrapper" mt={5} width="100%">
         <ReactPlayer
           className="react-player"
+          width="100%"
+          height="100%"
           url={file}
+          muted
           controls={true}
           config={{
             file: {
@@ -90,10 +116,35 @@ const Action = (props) => {
             </Select>
           </Right>
         </Flex>
-        <Flex>AgGrid</Flex>
+
+        <Div className="ag-theme-balham" width="100%" height="300px" mt={5}>
+          <AgGridReact
+            defaultColDef={defaultColDef}
+            // rowSelection={onRowSelection}
+            pagination={true}
+            paginationSize={10}
+            rowData={rowData}>
+            <AgGridColumn width={80} field="no" headerName="번호" />
+            <AgGridColumn
+              width={160}
+              field="detectTime"
+              headerName="최초감지시간"
+            />
+            <AgGridColumn
+              width={100}
+              field="waterTankNo"
+              headerName="수조번호"
+            />
+            <AgGridColumn
+              width={100}
+              field="detectType"
+              headerName="감지결과"
+            />
+          </AgGridReact>
+        </Div>
       </Div>
     </>
   );
 };
 
-export default Action;
+export default Detect;
