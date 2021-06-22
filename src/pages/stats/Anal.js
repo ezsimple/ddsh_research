@@ -149,23 +149,27 @@ const Anal: React.FC = (props) => {
             height={400}
             data={data}
             margin={{
-              top: 20,
-              right: 80,
-              bottom: 20,
-              left: 20,
+              top: 5,
+              right: 10,
+              bottom: 0,
+              left: 0,
             }}>
             <CartesianGrid stroke="#f5f5f5" />
             <XAxis
               dataKey="name"
               label={{
-                value: 'Pages',
+                /* value: 'Pages', */
                 position: 'insideBottomRight',
                 offset: 0,
               }}
               scale="band"
             />
             <YAxis
-              label={{ value: 'Index', angle: -90, position: 'insideLeft' }}
+              label={{
+                /* value: 'Index',*/
+                angle: -90,
+                position: 'insideLeft',
+              }}
             />
             <Tooltip />
             <Legend />
