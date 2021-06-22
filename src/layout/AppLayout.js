@@ -99,6 +99,7 @@ const AppLayout: React.FC = (props) => {
             margin: '5px 5px',
             padding: 0,
             overflow: 'hidden',
+            backgroundColor: '#ffffff',
           }}>
           {props.children}
         </Content>

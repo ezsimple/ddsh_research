@@ -3,7 +3,7 @@ import {
   AimOutlined,
   AlertOutlined,
   AuditOutlined,
-  EditOutlined,
+  // EditOutlined,
   FileDoneOutlined,
   LogoutOutlined,
   MonitorOutlined,
@@ -44,9 +44,11 @@ const AppMenu: React.FC = (props) => {
       <Menu.Item key="/alarm/log" icon={<AuditOutlined />}>
         알림 로그
       </Menu.Item>
+      {/*
       <Menu.Item key="/config/modify" icon={<EditOutlined />}>
         정보 수정
       </Menu.Item>
+      */}
       <Menu.Item key="/logout" icon={<LogoutOutlined />}>
         로그아웃
       </Menu.Item>

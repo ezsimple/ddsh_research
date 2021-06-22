@@ -18,6 +18,7 @@ export const color = {
   lemon: '#ffeaa7',
   orange: '#e17055',
   ice: '#c7ecee',
+  gray: '#95a5a6',
 };
 
 export const hoverColor = {
