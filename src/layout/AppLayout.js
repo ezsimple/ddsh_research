@@ -58,7 +58,7 @@ const AppLayout: React.FC = (props) => {
             overflow: 'hidden',
           }}>
           <Flex>
-            <Div fontSize={14} bold ml={5}>
+            <Div fontSize={16} bold ml={5}>
               {title}
             </Div>
             <Right>
