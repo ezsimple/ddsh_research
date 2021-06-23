@@ -12,8 +12,10 @@ const onEnded = () => {
 };
 
 const Detect: React.FC = (props) => {
-  const file =
-    'http://210.92.91.216:3333/videos/1.%20%ED%81%AC%EB%A1%AC%EC%84%A4%EC%B9%98%20%EB%B0%A9%EB%B2%95.mp4';
+  const [videoFile, setVideoFile] = useState(
+    'http://210.92.91.216:3333/videos/1. 크롬설치 방법.mp4'
+  );
+  const [videoPlay, setVideoPlay] = useState(false);
 
   const [checked, setChecked] = useState(true);
   const [defaultColDef, setDefaultColDef] = useState({
@@ -23,6 +25,7 @@ const Detect: React.FC = (props) => {
     editable: false,
     cellClass: 'text-center',
     // suppressSizeToFit: false,
+    rowSelection: 'single',
   });
   const [rowData, setRowData] = useState([
     {
@@ -57,6 +60,20 @@ const Detect: React.FC = (props) => {
   const onChange = (e) => {
     setChecked(e.target.checked);
   };
+  const onRowSelected = () => {
+    const rows = gridApi.getSelectedRows();
+    // console.log(rows.length, rows[0]);
+    const { no } = rows[0];
+    if (no === 5)
+      setVideoFile(
+        'http://210.92.91.216:3333/videos/3. 번식돈관리 주요메뉴 입력방법.mp4'
+      );
+    if (no === 6)
+      setVideoFile(
+        'http://210.92.91.216:3333/videos/2.피그플랜3.0 로그인방법.mp4'
+      );
+    setVideoPlay(true); // 자동 플레이 (리모콘)
+  };
 
   return (
     <>
@@ -81,7 +98,8 @@ const Detect: React.FC = (props) => {
           className="react-player"
           width="100%"
           height="100%"
-          url={file}
+          url={videoFile}
+          playing={videoPlay}
           muted
           controls={true}
           config={{
@@ -122,10 +140,11 @@ const Detect: React.FC = (props) => {
         <Div className="ag-theme-balham" width="100%" height="300px" mt={5}>
           <AgGridReact
             defaultColDef={defaultColDef}
-            // rowSelection={onRowSelection}
             pagination={true}
             paginationSize={10}
             onGridReady={onGridReady}
+            rowSelection={'single'}
+            onRowSelected={onRowSelected}
             rowData={rowData}>
             <AgGridColumn width={80} field="no" headerName="번호" />
             <AgGridColumn
