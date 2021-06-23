@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
-import { Div, Flex, Right, Button, Span } from '../../components/styled/shared';
-import { HrThin, HrThick } from '../../components/styled/mixedIn';
-import ReactPlayer from 'react-player/lazy';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
-import { Select, Checkbox } from 'antd';
+import React, { useState } from 'react';
+import ReactPlayer from 'react-player/lazy';
 import {
-  LineChart,
+  CartesianGrid,
+  Legend,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from 'recharts';
+import { HrThin } from '../../components/styled/mixedIn';
+import { Button, Div, Flex, Span } from '../../components/styled/shared';
 // import { fnLink } from '../../utils/RouteUtil';
-
 import '../action/Player.css'; // width:100% error fix
 
 const Dashboard: React.FC = (props) => {

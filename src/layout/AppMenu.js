@@ -18,8 +18,10 @@ const AppMenu: React.FC = (props) => {
   const { location, setTitle, onClose } = props;
 
   const handleOk = () => {
-    console.log('handleOk');
-    window.location.href = '/logout';
+    // console.log('handleOk', props);
+    const { history } = props; // props가 살아있뇌 ...
+    history.push('/logout');
+    // window.location.href = '/logout';
   };
 
   const confirm = () => {
