@@ -25,7 +25,7 @@ const Log: React.FC = (props) => {
     sortable: true,
     editable: false,
     cellClass: 'text-center',
-    suppressSizeToFit: false,
+    // suppressSizeToFit: false,
   });
   const [rowData, setRowData] = useState([
     {

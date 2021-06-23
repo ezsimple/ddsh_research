@@ -94,10 +94,10 @@ const AppLayout: React.FC = (props) => {
           </Flex>
         </Header>
         <Content
-          className="site-layout-background"
+          // className="site-layout-background"
           style={{
-            margin: '5px 5px',
-            padding: 0,
+            margin: '5px 0px', // margin 색상때문에 top, bottom만  여백을 줍니다
+            padding: '2px',
             overflow: 'hidden',
             backgroundColor: '#ffffff',
           }}>

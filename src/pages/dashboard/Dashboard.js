@@ -29,7 +29,7 @@ const Dashboard: React.FC = (props) => {
     sortable: true,
     editable: false,
     cellClass: 'text-center',
-    suppressSizeToFit: false,
+    // suppressSizeToFit: false,
   });
   const [rowData, setRowData] = useState([
     {
@@ -45,6 +45,7 @@ const Dashboard: React.FC = (props) => {
       detectType: '선회/입올림',
     },
   ]);
+
   // https://www.ag-grid.com/react-grid/rendering-api/
   const [gridApi, setGridApi] = useState(null);
   const [gridColumnApi, setGridColumnApi] = useState(null);
@@ -126,6 +127,7 @@ const Dashboard: React.FC = (props) => {
           <AgGridReact
             defaultColDef={defaultColDef}
             // rowSelection={onRowSelection}
+            enableColResize={true} //컬럼 크기 조정
             pagination={true}
             paginationSize={10}
             paginationAutoPageSize={true}

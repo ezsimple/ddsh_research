@@ -28,7 +28,7 @@ const Anal: React.FC = (props) => {
     sortable: true,
     editable: false,
     cellClass: 'text-center',
-    suppressSizeToFit: false,
+    // suppressSizeToFit: false,
   });
   const [rowData, setRowData] = useState([
     {
@@ -44,6 +44,22 @@ const Anal: React.FC = (props) => {
       detectType: '선회/입올림',
     },
   ]);
+
+  // https://www.ag-grid.com/react-grid/rendering-api/
+  const [gridApi, setGridApi] = useState(null);
+  const [gridColumnApi, setGridColumnApi] = useState(null);
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+    setGridColumnApi(params.columnApi);
+    params.api.sizeColumnsToFit();
+    // const updateData = (data) => {
+    //   params.api.setRowData(data.slice(0, 100));
+    // };
+    // fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
+    //   .then((resp) => resp.json())
+    //   .then((data) => updateData(data));
+  };
+
   const data = [
     {
       name: 'Page A',
@@ -99,7 +115,7 @@ const Anal: React.FC = (props) => {
         <Select
           allowClear
           showSearch
-          style={{ width: '50%' }}
+          style={{ width: '20%' }}
           placeholder="수조 선택"
           optionFilterProp="children"
           filterOption={(input, option) =>
@@ -109,7 +125,11 @@ const Anal: React.FC = (props) => {
           <Option value="A2">수조 A-2</Option>
           <Option value="A3">수조 A-3</Option>
         </Select>
-        <RangePicker width="100%" placeholder={['시작일자', '종료일자']} />
+        <RangePicker
+          width="60%"
+          placeholder={['시작일자', '종료일자']}
+          style={{ marginLeft: '2px' }}
+        />
         <Right>
           <Button fg="white" bg="blue">
             조회
@@ -175,6 +195,7 @@ const Anal: React.FC = (props) => {
           // rowSelection={onRowSelection}
           pagination={true}
           paginationSize={10}
+          onGridReady={onGridReady}
           rowData={rowData}>
           <AgGridColumn width={80} field="no" headerName="번호" />
           <AgGridColumn

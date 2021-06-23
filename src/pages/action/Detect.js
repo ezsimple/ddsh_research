@@ -22,7 +22,7 @@ const Detect: React.FC = (props) => {
     sortable: true,
     editable: false,
     cellClass: 'text-center',
-    suppressSizeToFit: false,
+    // suppressSizeToFit: false,
   });
   const [rowData, setRowData] = useState([
     {
@@ -38,6 +38,21 @@ const Detect: React.FC = (props) => {
       detectType: '선회/입올림',
     },
   ]);
+
+  // https://www.ag-grid.com/react-grid/rendering-api/
+  const [gridApi, setGridApi] = useState(null);
+  const [gridColumnApi, setGridColumnApi] = useState(null);
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+    setGridColumnApi(params.columnApi);
+    params.api.sizeColumnsToFit();
+    // const updateData = (data) => {
+    //   params.api.setRowData(data.slice(0, 100));
+    // };
+    // fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
+    //   .then((resp) => resp.json())
+    //   .then((data) => updateData(data));
+  };
 
   const onChange = (e) => {
     setChecked(e.target.checked);
@@ -110,6 +125,7 @@ const Detect: React.FC = (props) => {
             // rowSelection={onRowSelection}
             pagination={true}
             paginationSize={10}
+            onGridReady={onGridReady}
             rowData={rowData}>
             <AgGridColumn width={80} field="no" headerName="번호" />
             <AgGridColumn
