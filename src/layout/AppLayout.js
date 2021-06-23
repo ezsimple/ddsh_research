@@ -64,7 +64,7 @@ const AppLayout: React.FC = (props) => {
             </Div>
             <Right>
               <Select
-                allowClear
+                // allowClear // 양식장은 clear를 하지 못하도록 합니다.
                 showSearch
                 bordered
                 // showArrow={false}
