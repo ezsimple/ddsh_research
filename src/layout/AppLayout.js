@@ -32,7 +32,7 @@ const AppLayout: React.FC = (props) => {
     const { location } = window;
     switch (location.pathname) {
       case '/dashboard':
-        return setTitle('※ 대시보드');
+        return setTitle('※ 실시간 행동 감지');
       case '/action/detect':
         return setTitle('※ 실시간 행동 감지');
       case '/stats/anal':

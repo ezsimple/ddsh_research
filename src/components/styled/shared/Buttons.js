@@ -11,10 +11,10 @@ import {
 import { color } from '../Properties';
 import { getValue } from '../Util';
 
-import { Button as button } from 'antd';
+// import { Button as button } from 'antd';
 
 // Override
-const BasicButton = styled(button)`
+const BasicButton = styled.button`
   box-sizing: border-box;
   padding: ${getValue(5)} ${getValue(6)};
 
