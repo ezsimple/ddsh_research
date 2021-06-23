@@ -28,6 +28,7 @@ const Anal: React.FC = (props) => {
     sortable: true,
     editable: false,
     cellClass: 'text-center',
+    enableColResize: true,
     // suppressSizeToFit: false,
   });
   const [rowData, setRowData] = useState([
@@ -58,6 +59,15 @@ const Anal: React.FC = (props) => {
     // fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
     //   .then((resp) => resp.json())
     //   .then((data) => updateData(data));
+  };
+
+  const onRowDataChanged = (params) => {
+    params.api.getDisplayedRowAtIndex(0).setSelected(true);
+  };
+
+  const onFirstDataRendered = (params) => {
+    // console.log(params);
+    params.api.sizeColumnsToFit();
   };
 
   const data = [
@@ -196,6 +206,7 @@ const Anal: React.FC = (props) => {
           pagination={true}
           paginationSize={10}
           onGridReady={onGridReady}
+          onFirstDataRendered={onFirstDataRendered}
           rowData={rowData}>
           <AgGridColumn width={80} field="no" headerName="번호" />
           <AgGridColumn
