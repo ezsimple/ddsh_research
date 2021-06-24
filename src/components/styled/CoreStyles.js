@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import aniKey from './Keyframes';
+import aniKey from '~/styledComponents/Keyframes';
 import { activeColor, color, hoverColor } from './Properties';
 import { getValue, hasValue } from './Util';
 
@@ -8,14 +8,16 @@ export const position = css`
   ${(props) => props.absolute && 'position: absolute;'};
   ${(props) => props.fixed && 'position: fixed;'};
   ${(props) => props.sticky && 'position: sticky;'};
+  ${(props) => props.position && `position: ${props.position};`};
 `;
 
 export const margin = css`
   margin: ${(props) => getValue(props.m)};
-  margin-top: ${(props) => props.mt && getValue(props.mt)};
-  margin-right: ${(props) => props.mr && getValue(props.mr)};
-  margin-bottom: ${(props) => props.mb && getValue(props.mb)};
-  margin-left: ${(props) => props.ml && getValue(props.ml)};
+  margin-top: ${(props) => hasValue(props.mt) && getValue(props.mt)};
+  margin-right: ${(props) => hasValue(props.mr) && getValue(props.mr)};
+  margin-bottom: ${(props) => hasValue(props.mb) && getValue(props.mb)};
+  margin-left: ${(props) => hasValue(props.ml) && getValue(props.ml)};
+
   ${(props) =>
     hasValue(props.my) &&
     `margin-top: ${getValue(props.my)}; margin-bottom: ${getValue(props.my)};`}
@@ -30,6 +32,17 @@ export const padding = css`
   padding-right: ${(props) => props.pr && getValue(props.pr)};
   padding-bottom: ${(props) => props.pb && getValue(props.pb)};
   padding-left: ${(props) => props.pl && getValue(props.pl)};
+
+  ${(props) =>
+    props.py &&
+    `padding-top: ${getValue(props.py)}; padding-bottom: ${getValue(
+      props.py
+    )};`}
+  ${(props) =>
+    props.px &&
+    `padding-left: ${getValue(props.px)}; padding-right: ${getValue(
+      props.px
+    )};`}
 `;
 
 export const sticky = css`
@@ -87,10 +100,10 @@ export const notiNew = css`
   }
 `;
 
-// export const flex = css`
-//  display: flex;
-//  justify-content: ${(props) => props.justifyContent};
-//   align-items: ${(props) => props.justifyContent};
+// const flex = css`
+//     display: flex;
+//     justify-content: ${props => props.justifyContent};
+//     align-items: ${props => props.justifyContent};
 // `;
 
 // 계속 회전
@@ -103,9 +116,19 @@ export const scaleUp = css`
   animation: ${aniKey.scaleUp} 0.3s ease-in-out;
 `;
 
+// 위로 올라갔다 내려옴
+export const moveDown = css`
+  animation: ${aniKey.moveDown} 0.3s ease-in-out;
+`;
+
+// 위로 올라갔다 내려옴
+export const moveUp = css`
+  animation: ${aniKey.moveUp} 0.3s ease-in-out;
+`;
+
 //TODO : pc일 경우만 hover가 되도록 작성해야함
 const hover = css`
-  // ${(props) =>
+  ${(props) =>
     props.bg &&
     !props.noHover &&
     `&:hover{background-color: ${hoverColor[props.bg]}}`};
@@ -121,4 +144,6 @@ const active = css`
 export const pseudo = {
   hover: hover,
   active: active,
+  moveDown: moveDown,
+  moveUp: moveUp,
 };
