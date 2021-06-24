@@ -1,7 +1,6 @@
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import { DatePicker } from 'antd';
-import React, { useState } from 'react';
-import { useEffectOnce } from 'react-use';
+import React, { useEffect, useState } from 'react';
 import {
   Cell,
   Legend,
@@ -15,12 +14,14 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Button, Div, Flex, Right, Span } from '../../components/styled/shared';
+import { useWindowDimensions } from '../../hooks';
 import '../css/RangePicker.css';
 
 const { RangePicker } = DatePicker;
 
 const Log: React.FC = (props) => {
   const [defaultColDef, setDefaultColDef] = useState({
+    flex: 1,
     filter: true,
     resizable: true,
     sortable: true,
@@ -58,7 +59,14 @@ const Log: React.FC = (props) => {
     //   .then((data) => updateData(data));
   };
 
-  // useEffectOnce();
+  const dim = useWindowDimensions();
+  const [width, setWidth] = useState(dim.width);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    setWidth(dim.width);
+    if (gridApi) gridApi.sizeColumnsToFit();
+  });
 
   return (
     <>
@@ -111,7 +119,7 @@ const Log: React.FC = (props) => {
           </RadarChart>
         </ResponsiveContainer>
       </Div>
-      <Div className="ag-theme-balham" width="100%" height="300px" mt={25}>
+      <Div className="ag-theme-balham" width={width} height="300px" mt={25}>
         <AgGridReact
           defaultColDef={defaultColDef}
           // rowSelection={onRowSelection}
@@ -119,6 +127,7 @@ const Log: React.FC = (props) => {
           paginationSize={10}
           paginationAutoPageSize={true}
           onGridReady={onGridReady}
+          enableCellChangeFlash={true}
           rowData={rowData}>
           <AgGridColumn width={80} field="no" headerName="번호" />
           <AgGridColumn
