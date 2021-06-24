@@ -65,7 +65,7 @@ const Log: React.FC = (props) => {
       <Flex nowrap mt={5}>
         <RangePicker
           allowClear={false}
-          width="100%"
+          style={{ marginLeft: '2px', width: '48%' }}
           placeholder={['시작일자', '종료일자']}
         />
         <Right>
