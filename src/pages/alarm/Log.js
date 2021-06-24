@@ -15,6 +15,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Button, Div, Flex, Right, Span } from '../../components/styled/shared';
+import '../css/RangePicker.css';
 
 const { RangePicker } = DatePicker;
 
@@ -62,7 +63,11 @@ const Log: React.FC = (props) => {
   return (
     <>
       <Flex nowrap mt={5}>
-        <RangePicker width="100%" placeholder={['시작일자', '종료일자']} />
+        <RangePicker
+          allowClear={false}
+          width="100%"
+          placeholder={['시작일자', '종료일자']}
+        />
         <Right>
           <Button fg="white" bg="blue">
             조회

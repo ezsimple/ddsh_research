@@ -14,6 +14,7 @@ import {
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import { Checkbox, DatePicker, Select } from 'antd';
 import { Button, Div, Flex, Right } from '../../components/styled/shared';
+import '../css/RangePicker.css';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -121,11 +122,12 @@ const Anal: React.FC = (props) => {
 
   return (
     <>
-      <Flex nowrap mt={5}>
+      <Flex nowrap>
         <Select
           // allowClear
           showSearch
-          dropdownStyle={{ maxWidth: '16%', height: '32px' }}
+          style={{ width: '28%' }}
+          dropdownStyle={{ maxWidth: '12%', height: '32px' }}
           placeholder="수조 선택"
           optionFilterProp="children"
           filterOption={(input, option) =>
@@ -136,12 +138,13 @@ const Anal: React.FC = (props) => {
           <Option value="A3">수조 A-3</Option>
         </Select>
         <RangePicker
-          width="60%"
+          allowEmpty={false}
+          allowClear={false}
           placeholder={['시작일자', '종료일자']}
-          style={{ marginLeft: '2px' }}
+          style={{ marginLeft: '2px', width: '48%' }}
         />
         <Right>
-          <Button fg="white" bg="blue">
+          <Button nowrap fg="white" bg="blue">
             조회
           </Button>
         </Right>
