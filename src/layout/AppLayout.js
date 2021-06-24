@@ -80,7 +80,15 @@ const AppLayout: React.FC = (props) => {
                 <Option value="C">양식장C</Option>
               </Select>
             </Right>
-            <Div width={40} m={0} ml={0}>
+            <Div
+              width={40}
+              m={0}
+              ml={0}
+              style={{
+                display: 'inline-flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <MenuOutlined
                 onClick={onShow}
                 style={{
@@ -88,6 +96,7 @@ const AppLayout: React.FC = (props) => {
                   color: 'black',
                   paddingRight: '5px',
                   marginLeft: '5px',
+                  verticalAlign: 'middle',
                 }}
               />
             </Div>

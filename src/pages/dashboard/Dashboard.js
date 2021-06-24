@@ -18,7 +18,7 @@ import '../action/Player.css'; // width:100% error fix
 
 const Dashboard: React.FC = (props) => {
   const [videoFile, setVideoFile] = useState(
-    'http://210.92.91.216:3333/videos/1. 크롬설치 방법.mp4'
+    'http://210.92.91.216:3333/videos/empty.mp4'
   );
   const [videoPlay, setVideoPlay] = useState(false);
 

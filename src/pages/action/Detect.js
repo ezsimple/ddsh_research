@@ -13,7 +13,7 @@ const onEnded = () => {
 
 const Detect: React.FC = (props) => {
   const [videoFile, setVideoFile] = useState(
-    'http://210.92.91.216:3333/videos/1. 크롬설치 방법.mp4'
+    'http://210.92.91.216:3333/videos/empty.mp4'
   );
   const [videoPlay, setVideoPlay] = useState(false);
 
@@ -79,7 +79,7 @@ const Detect: React.FC = (props) => {
     <>
       <Div nowrap>
         <Select
-          allowClear
+          // allowClear
           showSearch
           style={{ width: '100%' }}
           placeholder="수조 선택"
@@ -123,7 +123,7 @@ const Detect: React.FC = (props) => {
             </Checkbox>
 
             <Select
-              allowClear
+              // allowClear
               showSearch
               placeholder="감지기간"
               optionFilterProp="children"

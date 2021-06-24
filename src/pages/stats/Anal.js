@@ -123,9 +123,9 @@ const Anal: React.FC = (props) => {
     <>
       <Flex nowrap mt={5}>
         <Select
-          allowClear
+          // allowClear
           showSearch
-          style={{ width: '20%' }}
+          dropdownStyle={{ maxWidth: '16%', height: '32px' }}
           placeholder="수조 선택"
           optionFilterProp="children"
           filterOption={(input, option) =>
