@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import aniKey from '~/styledComponents/Keyframes';
+import aniKey from './Keyframes';
 import { activeColor, color, hoverColor } from './Properties';
 import { getValue, hasValue } from './Util';
 
