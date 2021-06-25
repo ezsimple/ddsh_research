@@ -13,13 +13,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import {
-  Button,
-  Div,
-  Flex,
-  RangePicker,
-  Right,
-} from '../../components/styled/shared';
+import { Button, Div, Flex, Right } from '../../components/styled/shared';
+import { RangePicker } from '../../components/custom';
 
 const { Option } = Select;
 

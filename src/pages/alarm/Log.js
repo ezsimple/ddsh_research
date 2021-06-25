@@ -13,14 +13,8 @@ import {
   RadarChart,
   ResponsiveContainer,
 } from 'recharts';
-import {
-  Button,
-  Div,
-  Flex,
-  Right,
-  Span,
-  RangePicker,
-} from '../../components/styled/shared';
+import { Button, Div, Flex, Right, Span } from '../../components/styled/shared';
+import { RangePicker } from '../../components/custom';
 import { useWindowDimensions } from '../../hooks';
 
 const Log: React.FC = (props) => {

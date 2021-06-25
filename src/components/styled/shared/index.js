@@ -18,7 +18,6 @@ import {
 import { A, Link } from './Links';
 import { TriangleUp, TriangleDown } from './Shapes';
 import AnimationLayouts from './AnimationLayouts';
-import { RangePicker } from './DatePicker';
 
 export {
   Button,
@@ -41,5 +40,4 @@ export {
   TriangleDown,
   BgImgDiv,
   AnimationLayouts,
-  RangePicker,
 };
