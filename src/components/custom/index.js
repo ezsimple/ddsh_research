@@ -1,3 +1,4 @@
-import { RangePicker } from './DatePicker';
+import { RangePicker } from './RangePicker';
+import { ReactPlayer } from './ReactPlayer';
 
-export { RangePicker };
+export { RangePicker, ReactPlayer };

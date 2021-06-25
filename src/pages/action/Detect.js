@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Div, Flex, Right } from '../../components/styled/shared';
+import { ReactPlayer } from '../../components/custom';
 import { Select, Checkbox } from 'antd';
-import ReactPlayer from 'react-player/lazy';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
-import './Player.css'; // width:100% error fix
 
 const { Option } = Select;
 

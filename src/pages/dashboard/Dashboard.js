@@ -1,6 +1,5 @@
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import React, { useState } from 'react';
-import ReactPlayer from 'react-player/lazy';
 import {
   CartesianGrid,
   Legend,
@@ -13,8 +12,8 @@ import {
 } from 'recharts';
 import { HrThin } from '../../components/styled/mixedIn';
 import { Button, Div, Flex, Span } from '../../components/styled/shared';
+import { ReactPlayer } from '../../components/custom';
 // import { fnLink } from '../../utils/RouteUtil';
-import '../action/Player.css'; // width:100% error fix
 
 const Dashboard: React.FC = (props) => {
   const [videoFile, setVideoFile] = useState(
