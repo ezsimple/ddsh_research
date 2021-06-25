@@ -65,11 +65,11 @@ const Detect: React.FC = (props) => {
     const { no } = rows[0];
     if (no === 5)
       setVideoFile(
-        'http://210.92.91.216:3333/videos/3. 번식돈관리 주요메뉴 입력방법.mp4'
+        'http://210.92.91.216:3333/nvr_recodes/CAM1 2020-07-22 13 21 56 021.mp4'
       );
     if (no === 6)
       setVideoFile(
-        'http://210.92.91.216:3333/videos/2.피그플랜3.0 로그인방법.mp4'
+        'http://210.92.91.216:3333/nvr_recodes/CAM1 2020-07-10 10 40 07 065.mp4'
       );
     setVideoPlay(true); // 자동 플레이 (리모콘)
   };
