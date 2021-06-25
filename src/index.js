@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ConfigProvider } from 'antd';
+import koKR from 'antd/lib/locale/ko_KR';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -10,12 +14,16 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'tachyons/css/tachyons.min.css';
 import 'antd/dist/antd.css';
-// import './index.css';
+
+// locale을 가장 먼저 초기화 시켜준다
+moment.locale('ko');
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <App />
+      <ConfigProvider locale={koKR}>
+        <App />
+      </ConfigProvider>
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')

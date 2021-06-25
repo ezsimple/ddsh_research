@@ -1,23 +1,27 @@
+import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import { Checkbox, Select } from 'antd';
 import React, { useState } from 'react';
 import {
-  ComposedChart,
-  Line,
   Area,
   Bar,
+  CartesianGrid,
+  ComposedChart,
+  Legend,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from 'recharts';
-import { AgGridColumn, AgGridReact } from 'ag-grid-react';
-import { Checkbox, DatePicker, Select } from 'antd';
-import { Button, Div, Flex, Right } from '../../components/styled/shared';
-import '../css/RangePicker.css';
+import {
+  Button,
+  Div,
+  Flex,
+  RangePicker,
+  Right,
+} from '../../components/styled/shared';
 
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 
 const Anal: React.FC = (props) => {
   const [tempChecked, setTempChecked] = useState(true); // 수온

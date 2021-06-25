@@ -13,11 +13,15 @@ import {
   RadarChart,
   ResponsiveContainer,
 } from 'recharts';
-import { Button, Div, Flex, Right, Span } from '../../components/styled/shared';
+import {
+  Button,
+  Div,
+  Flex,
+  Right,
+  Span,
+  RangePicker,
+} from '../../components/styled/shared';
 import { useWindowDimensions } from '../../hooks';
-import '../css/RangePicker.css';
-
-const { RangePicker } = DatePicker;
 
 const Log: React.FC = (props) => {
   const [defaultColDef, setDefaultColDef] = useState({

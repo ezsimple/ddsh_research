@@ -2,9 +2,9 @@ import styled, { css } from 'styled-components';
 import { color, responsive } from '../Properties';
 import { getValue, hasValue } from '../Util';
 import {
-  position,
   margin,
   padding,
+  position,
   sticky,
   fixed,
   noti,
@@ -45,9 +45,9 @@ const defaultStyle = css`
   border-left: ${(props) =>
     props.bl && `${getValue(props.bl)} solid ${color[props.bc]}`};
 
-  ${position}
   ${margin};
   ${padding};
+  ${position}
 
   ${(props) => props.relative && 'position: relative;'};
   ${(props) => props.absolute && 'position: absolute;'};
@@ -88,6 +88,7 @@ const defaultStyle = css`
   ${(props) =>
     props.shadow === 'lg' && 'box-shadow: 1px 1px 15px rgba(0,0,0,0.1);'};
 
+  ${(props) => props.custom && props.custom}
 `;
 
 export const Div = styled.div`
