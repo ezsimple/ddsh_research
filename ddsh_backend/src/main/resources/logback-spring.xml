@@ -29,10 +29,6 @@
     </layout>
   </appender>
 
-  <!-- http requests log -->
-  <logger name="javamelody"><level value="debug" /></logger>
-  <logger name="net.bull.javamelody"><level value="debug" /></logger>
-
   <root level="INFO">
     <appender-ref ref="file" />
     <appender-ref ref="console" />

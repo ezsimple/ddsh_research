@@ -2,8 +2,6 @@ package ddsh.configuration;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -11,11 +9,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import io.mkeasy.resolver.CommandMapArgumentResolver;
-import io.mkeasy.webapp.processor.ExcelFactory;
-import io.mkeasy.webapp.processor.FileFactory;
-import lombok.extern.slf4j.Slf4j;
 import ddsh.security.LoginInterceptor;
+import io.mkeasy.resolver.CommandMapArgumentResolver;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 // @EnableWebMvc
@@ -45,22 +41,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(loginInterceptor())
 		.addPathPatterns("/**")
 		.excludePathPatterns("/","/static/**","/webjars/**","/login.do","/logout.do","/index*.do","/error/*.do")
-		.excludePathPatterns("/mesureInfo.do", "/ventlInfo.do", "/weatherInfo.do"); // (주의) : Iot 연동 허용
-	}
-
-    @Value("${upload.dir}")
-	private String UPLOAD_DIR;
-
-	@Bean
-	public FileFactory fileFactory() {
-		FileFactory bean = new FileFactory();
-		bean.setUploadDir(UPLOAD_DIR);
-		return bean;
-	}
-
-	@Bean
-	public ExcelFactory excelFactory() {
-		return new ExcelFactory();
+		.excludePathPatterns("/api/v1/abnormal/**"); // AI학습 서버 연동 
 	}
 
 }
