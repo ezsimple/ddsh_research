@@ -3,7 +3,6 @@
 
   <springProfile name="local"><property resource="application-local.properties"/></springProfile>
   <springProfile name="dev"><property resource="application-dev.properties"/></springProfile>
-  <springProfile name="cjprod"><property resource="application-cjprod.properties"/></springProfile>
 
   <property name="LOG_DIR" value="${logging.path}" />
   <property name="LOG_PATH_NAME" value="${LOG_DIR}/ddsh_backend.log" />
@@ -29,6 +28,10 @@
       </pattern>
     </layout>
   </appender>
+
+  <!-- http requests log -->
+  <logger name="javamelody"><level value="debug" /></logger>
+  <logger name="net.bull.javamelody"><level value="debug" /></logger>
 
   <root level="INFO">
     <appender-ref ref="file" />

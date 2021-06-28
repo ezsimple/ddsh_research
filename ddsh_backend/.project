@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>backend</name>
-	<comment>Project backend created by Buildship.</comment>
+	<name>ddsh_backend</name>
+	<comment>Project ddsh_backend created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>

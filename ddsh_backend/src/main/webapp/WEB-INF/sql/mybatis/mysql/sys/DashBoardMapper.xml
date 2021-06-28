@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  
+*******************************************************************************
+  돈사환기 : 대시보드
+*******************************************************************************/
+-->
+<mapper namespace="newgov.dashboardMapper">
+
+    <select id="selectTnMesureInfo" parameterType="egovMap" resultType="egovMap">
+       SELECT 
+       	 T1.FARM_NO
+       	 ,T1.EQPMN_TY_CODE
+       	 ,T1.EQPMN_NO
+       	 ,T1.EQPMN_NM
+       	 ,DATE_FORMAT(T1.MESURE_DT, '%Y-%m-%d %H:%i:%s') AS MESURE_DT
+       	 ,T1.TP -- 온도
+       	 ,T1.HD -- 습도
+       	 ,T1.NH3 -- 암모니아
+       	 ,T3.TEMP_MIN -- 온도미만
+       	 ,T3.TEMP_MAX -- 온도초과
+       	 ,T3.NH3_MIN -- 암모니아미만
+       	 ,T3.NH3_MAX -- 암모니아 초과
+       	 ,T3.HUM_MIN -- 습도미만
+       	 ,T3.HUM_MAX -- 습도초과
+       	 ,T3.WIND_MIN -- 풍속미만
+       	 ,T3.WIND_MAX -- 풍속초과
+       FROM VW_MESURE_INFO T1, VW_EQPMN_MANAGE T2
+       LEFT JOIN TN_EQPMN_ALM_INFO T3 ON T2.FARM_NO = T3.FARM_NO AND T2.EQPMN_TY_CODE = T3.EQPMN_TY_CODE AND T2.EQPMN_NO = T3.EQPMN_NO
+       WHERE
+       	 T1.FARM_NO = #{farmNo }
+       	 AND T1.FARM_NO = T2.FARM_NO
+       	 AND T1.EQPMN_NO = T2.EQPMN_NO
+       	 AND T1.EQPMN_TY_CODE = T2.EQPMN_TY_CODE
+		 <if test="inOut != null and inOut != ''">
+       	 AND T2.IN_OUT = #{inOut}
+       	 </if>
+       ORDER BY T1.MESURE_DT DESC
+       	 LIMIT 1
+	</select>
+
+    <select id="selectTnVentlInfo" parameterType="egovMap" resultType="egovMap">
+       SELECT 
+       	 DATE_FORMAT(T1.MESURE_DT, '%Y-%m-%d %H:%i:%s') AS MESURE_DT
+       	 ,T1.EQPMN_NM
+       	 ,T1.TP -- 온도(환기팬)
+       	 ,T1.VENTLQY1 -- 환기량1
+       	 ,T1.VENTLQY2 -- 환기량2
+       	 ,T1.VENTLQY3 -- 환기량3
+       	 ,T3.TEMP_MIN -- 온도미만
+       	 ,T3.TEMP_MAX -- 온도초과
+       	 ,T3.NH3_MIN -- 암모니아미만
+       	 ,T3.NH3_MAX -- 암모니아 초과
+       	 ,T3.HUM_MIN -- 습도미만
+       	 ,T3.HUM_MAX -- 습도초과
+       	 ,T3.WIND_MIN -- 풍속미만
+       	 ,T3.WIND_MAX -- 풍속초과
+       FROM VW_VENTL_INFO T1, VW_EQPMN_MANAGE T2
+       LEFT JOIN TN_EQPMN_ALM_INFO T3 ON T2.FARM_NO = T3.FARM_NO AND T2.EQPMN_TY_CODE = T3.EQPMN_TY_CODE AND T2.EQPMN_NO = T3.EQPMN_NO
+       WHERE
+       	 T1.FARM_NO = #{farmNo }
+       	 AND T1.FARM_NO = T2.FARM_NO
+       	 AND T1.EQPMN_NO = T2.EQPMN_NO
+       	 AND T1.EQPMN_TY_CODE = T2.EQPMN_TY_CODE
+		 <if test="inOut != null and inOut != ''">
+       	 AND T2.IN_OUT = #{inOut}
+       	 </if>
+       ORDER BY T1.MESURE_DT DESC
+       	 LIMIT 1
+	</select>
+
+    <select id="selectTnWeatherInfo" parameterType="egovMap" resultType="egovMap">
+       SELECT 
+       	 DATE_FORMAT(T1.MESURE_DT, '%Y-%m-%d %H:%i:%s') AS MESURE_DT
+       	 ,T1.EQPMN_NM
+       	 ,T1.TP -- 온도
+       	 ,T1.HD -- 습도
+       	 ,T1.NH3 -- 암모니아
+       	 ,T1.WD -- 풍향
+       	 ,FN_WD_NM(T1.WD) AS WD_NM -- 풍향이름
+       	 ,T1.WS -- 풍속
+       	 ,T3.TEMP_MIN -- 온도미만
+       	 ,T3.TEMP_MAX -- 온도초과
+       	 ,T3.NH3_MIN -- 암모니아미만
+       	 ,T3.NH3_MAX -- 암모니아 초과
+       	 ,T3.HUM_MIN -- 습도미만
+       	 ,T3.HUM_MAX -- 습도초과
+       	 ,T3.WIND_MIN -- 풍속미만
+       	 ,T3.WIND_MAX -- 풍속초과
+       FROM VW_WEATHER_INFO T1, VW_EQPMN_MANAGE T2
+       LEFT JOIN TN_EQPMN_ALM_INFO T3 ON T2.FARM_NO = T3.FARM_NO AND T2.EQPMN_TY_CODE = T3.EQPMN_TY_CODE AND T2.EQPMN_NO = T3.EQPMN_NO
+       WHERE
+       	 T1.FARM_NO = #{farmNo }
+       	 AND T1.FARM_NO = T2.FARM_NO
+       	 AND T1.EQPMN_NO = T2.EQPMN_NO
+       	 AND T1.EQPMN_TY_CODE = T2.EQPMN_TY_CODE
+		 <if test="inOut != null and inOut != ''">
+       	 AND T2.IN_OUT = #{inOut}
+       	 </if>
+       ORDER BY T1.MESURE_DT DESC
+       	 LIMIT 1
+	</select>
+
+</mapper>

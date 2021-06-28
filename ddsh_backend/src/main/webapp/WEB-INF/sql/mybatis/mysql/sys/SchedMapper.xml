@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  
+*******************************************************************************
+  돈사환기 : 스케쥴러 (이상,절감율,고장,청소 감지)
+*******************************************************************************/
+-->
+<mapper namespace="newgov.schedMapper">
+
+	<!-- 절감율 구하기 -->
+    <select id="selectTnMesureSaveRatio" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+    		ROUND(AVG(A.IN_NH3)) AS IN_NH3, 
+    		ROUND(AVG(A.OUT_NH3)) AS OUT_NH3,
+    		ROUND(AVG(A.IN_NH3 - A.OUT_NH3)) AS DIFF_NH3
+		FROM TN_MESURE_SAVE_RATIO A
+		WHERE
+		    FARM_NO = #{farmNo }
+			AND A.MESURE_DT BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()
+    </select>
+    
+    <!-- 장치고장여부 확인 : 0 이상일 경우 데이터 수집이 안되고 있음 -->
+    <select id="selectTnMesureInfoForBroken" parameterType="egovMap" resultType="egovMap">
+    	SELECT TIMESTAMPDIFF(HOUR, MAX(A.MESURE_DT), NOW()) - #{hour } AS DIFF 
+		FROM 
+			TN_MESURE_INFO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+			-- 고장은 방치가 있으므로, 날짜 범위 지정 안됨
+			-- AND A.MESURE_DT BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW() 
+    </select>
+
+    <!-- 장치고장여부 확인 : 0 이상일 경우 데이터 수집이 안되고 있음 -->
+    <select id="selectTnVentlInfoForBroken" parameterType="egovMap" resultType="egovMap">
+    	SELECT TIMESTAMPDIFF(HOUR, MAX(A.MESURE_DT), NOW()) - #{hour } AS DIFF 
+		FROM 
+			TN_VENTL_INFO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+			-- 고장은 방치가 있으므로, 날짜 범위 지정 안됨
+			-- AND A.MESURE_DT BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()
+    </select>
+
+    <!-- 장치고장여부 확인 : 0 이상일 경우 데이터 수집이 안되고 있음 -->
+    <select id="selectTnWeatherInfoForBroken" parameterType="egovMap" resultType="egovMap">
+    	SELECT TIMESTAMPDIFF(HOUR, MAX(A.MESURE_DT), NOW()) - #{hour } AS DIFF 
+		FROM 
+			TN_WEATHER_INFO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+			-- 고장은 방치가 있으므로, 날짜 범위 지정 안됨
+			-- AND A.MESURE_DT BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()
+    </select>
+
+	<!-- 청소시간 검출 하기 -->
+    <select id="selectTnEqpmnManageForVacuum" parameterType="egovMap" resultType="egovMap">
+    	SELECT 
+			MOD(DATEDIFF(NOW(), A.REGIST_DT), (SELECT B_CLR_VAL FROM TN_SYS_ALM_INFO)) AS VACUUM_YN, -- 0 = 청소하세요
+			DATE_FORMAT(A.REGIST_DT,'%Y-%m-%d') AS REGIST_DT, -- 설치일자
+			DATEDIFF(NOW(), A.REGIST_DT) AS DUR_DAY -- 경과일자
+		FROM 
+			TN_EQPMN_MANAGE A
+		WHERE
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+    </select>
+
+	<!-- 임계치 설정 미만, 초과 검사 -->
+    <select id="selectVwMesureInfoForAxisUnderOrOver" parameterType="egovMap" resultType="egovMap">
+		SELECT
+			ROUND(AVG(T1.TP))  AS TP, 
+			ROUND(AVG(T1.HD))  AS HD, 
+			ROUND(AVG(T1.NH3)) AS NH3,
+			MAX(T2.TEMP_MIN)   AS TP_MIN,
+			MAX(T2.TEMP_MAX)   AS TP_MAX,
+			MAX(T2.HUM_MIN)    AS HD_MIN,
+			MAX(T2.HUM_MAX)    AS HD_MAX,
+			MAX(T2.NH3_MIN)    AS NH3_MIN,
+			MAX(T2.NH3_MAX)    AS NH3_MAX,
+			MAX(T2.WIND_MIN)   AS WD_MIN,
+			MAX(T2.WIND_MAX)   AS WD_MAX
+		FROM
+			VW_MESURE_INFO T1, TN_EQPMN_ALM_INFO T2
+		WHERE 
+			T1.FARM_NO = T2.FARM_NO
+			AND T1.EQPMN_TY_CODE = T2.EQPMN_TY_CODE
+			AND T1.EQPMN_NO = T2.EQPMN_NO
+			AND T1.FARM_NO = #{farmNo }
+			AND T1.EQPMN_NO = #{eqpmnNo }    
+			AND T1.MESURE_DT BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()
+    </select>
+
+    <select id="selectVwWeatherInfoForAxisUnderOrOver" parameterType="egovMap" resultType="egovMap">
+		SELECT
+			ROUND(AVG(T1.TP))  AS TP, 
+			ROUND(AVG(T1.HD))  AS HD, 
+			ROUND(AVG(T1.NH3)) AS NH3,
+			ROUND(AVG(T1.WS))  AS WS,
+			MAX(T2.TEMP_MIN)   AS TP_MIN,
+			MAX(T2.TEMP_MAX)   AS TP_MAX,
+			MAX(T2.HUM_MIN)    AS HD_MIN,
+			MAX(T2.HUM_MAX)    AS HD_MAX,
+			MAX(T2.NH3_MIN)    AS NH3_MIN,
+			MAX(T2.NH3_MAX)    AS NH3_MAX,
+			MAX(T2.WIND_MIN)   AS WD_MIN,
+			MAX(T2.WIND_MAX)   AS WD_MAX
+		FROM
+			VW_WEATHER_INFO T1, TN_EQPMN_ALM_INFO T2
+		WHERE 
+			T1.FARM_NO = T2.FARM_NO
+			AND T1.EQPMN_TY_CODE = T2.EQPMN_TY_CODE
+			AND T1.EQPMN_NO = T2.EQPMN_NO
+			AND T1.FARM_NO = #{farmNo }
+			AND T1.EQPMN_NO = #{eqpmnNo }    
+			AND T1.MESURE_DT BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()
+    </select>
+
+    <select id="selectPrevWeekDt" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL (7 + DAYOFWEEK(CURDATE()) - 1) DAY),'%Y-%m-%d') AS PREV_WEEK_START_DT,
+			DATE_FORMAT(DATE_SUB(CURDATE()-1, INTERVAL (DAYOFWEEK(CURDATE()) - 1) DAY),'%Y-%m-%d') AS PREV_WEEK_END_DT
+	</select>
+
+    <select id="selectNowWeekDt" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL(DAYOFWEEK(CURDATE()) - 1) DAY),'%Y-%m-%d') AS NOW_WEEK_START_DT,
+			DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL(7 - DAYOFWEEK(CURDATE())) DAY),'%Y-%m-%d') AS NOW_WEEK_END_DT
+	</select>
+      
+</mapper>

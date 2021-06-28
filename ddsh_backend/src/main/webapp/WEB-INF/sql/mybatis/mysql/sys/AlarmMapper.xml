@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  
+*******************************************************************************
+  돈사환기 : 알림설정 / 임계치, 알림로그
+*******************************************************************************/
+-->
+<mapper namespace="newgov.alarmMapper">
+
+    <select id="selectTnSysAlmInfo" parameterType="egovMap" resultType="egovMap">
+        SELECT 
+        	G_USE_YN,    -- 알람기능 전체 ON/OFF
+        	B_USE_YN,    -- 기본알람 ON/OFF
+        	B_PERF_VAL,  -- 성능기준값(%)
+        	B_BROK_VAL,  -- 고장기준값(시간)
+        	B_CLR_VAL    -- 청소(일)
+	    FROM 
+	    	TN_SYS_ALM_INFO
+	</select>
+
+    <select id="selectTnEqpmnAlmInfo" parameterType="egovMap" resultType="egovMap">
+    	SELECT 
+    		EQPMN_TY_CODE,
+    		EQPMN_NO,
+    		FARM_NO, 
+    		USE_YN,
+    		TEMP_MIN, 
+    		TEMP_MAX, 
+    		NH3_MIN, 
+    		NH3_MAX, 
+    		HUM_MIN, 
+    		HUM_MAX, 
+    		WIND_MIN, 
+    		WIND_MAX 
+		FROM TN_EQPMN_ALM_INFO
+		WHERE 1=1
+			AND FARM_NO = #{farmNo }
+			AND EQPMN_TY_CODE = #{eqpmnTyCode }
+			<if test="eqpmnNo != null and eqpmnNo != ''">
+			AND EQPMN_NO = #{eqpmnNo }
+			</if>
+    </select>
+
+	<!-- 전체,기본 알람 설정 업데이트 -->
+    <update id="updateTnSysAlmInfo" parameterType="egovMap" >
+    	UPDATE TN_SYS_ALM_INFO
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="gUseYn != null and gUseYn != ''">G_USE_YN=#{gUseYn },</if>
+			<if test="bUseYn != null and bUseYn != ''">B_USE_YN=#{bUseYn },</if>
+			<if test="bPerfVal != null and bPerfVal != ''">B_PERF_VAL= #{bPerfVal },</if>
+			<if test="bBrokVal != null and bBrokVal != ''">B_BROK_VAL= #{bBrokVal },</if>
+			<if test="bClrVal != null and bClrVal != ''">B_CLR_VAL= #{bClrVal },</if>
+    	</trim>
+    </update>
+
+	<!-- 장치별 알람설정 유무 확인 -->
+    <select id="countTnEqpmnAlmInfo" parameterType="egovMap" resultType="int">
+    	SELECT COUNT(*) AS CNT
+    	FROM TN_EQPMN_ALM_INFO
+		WHERE 
+			FARM_NO = #{farmNo }
+			AND EQPMN_TY_CODE = #{eqpmnTyCode }
+			AND EQPMN_NO = #{eqpmnNo }
+    </select>
+
+	<!-- 장치별 알람설정 추가 -->
+    <insert id="insertTnEqpmnAlmInfo" parameterType="egovMap" >
+      <selectKey keyProperty="maxSn" resultType="int" order="BEFORE">
+      	SELECT MAX(SN)+1 AS MAX_SN FROM TN_EQPMN_ALM_INFO
+      </selectKey>
+    	INSERT INTO TN_EQPMN_ALM_INFO (
+    		SN, 
+			<if test="tempMin != null and tempMin != ''">
+			TEMP_MIN, 
+			</if>
+			<if test="tempMax != null and tempMax != ''">
+			TEMP_MAX, 
+			</if>
+			<if test="nh3Min != null and nh3Min != ''">
+			NH3_MIN, 
+			</if>
+			<if test="nh3Max != null and nh3Max != ''">
+			NH3_MAX, 
+			</if>
+			<if test="humMin != null and humMin != ''">
+			HUM_MIN, 
+			</if>
+			<if test="humMax != null and humMax != ''">
+			HUM_MAX, 
+			</if>
+			<if test="windMin != null and windMin != ''">
+			WIND_MIN, 
+			</if>
+			<if test="windMax != null and windMax != ''">
+			WIND_MAX,
+			</if>
+			EQPMN_TY_CODE, 
+			EQPMN_NO, 
+			FARM_NO
+		) VALUES ( 
+			#{maxSn },
+			<if test="tempMin != null and tempMin != ''">
+			#{tempMin }, 
+			</if>
+			<if test="tempMax != null and tempMax != ''">
+			#{tempMax }, 
+			</if>
+			<if test="nh3Min != null and nh3Min != ''">
+			#{nh3Min }, 
+			</if>
+			<if test="nh3Max != null and nh3Max != ''">
+			#{nh3Max }, 
+			</if>
+			<if test="humMin != null and humMin != ''">
+			#{humMin }, 
+			</if>
+			<if test="humMax != null and humMax != ''">
+			#{humMax }, 
+			</if>
+			<if test="windMin != null and windMin != ''">
+			#{windMin }, 
+			</if>
+			<if test="windMax != null and windMax != ''">
+			#{windMax },
+			</if>
+			#{eqpmnTyCode }, 
+			#{eqpmnNo }, 
+			#{farmNo }
+		)
+    </insert>
+
+	<!-- 장치별 알람설정 수정 -->
+    <update id="updateTnEqpmnAlmInfo" parameterType="egovMap" >
+		UPDATE TN_EQPMN_ALM_INFO
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="useYn != null and useYn != ''">
+			USE_YN= #{useYn },
+			</if>
+			<if test="tempMin != null and tempMin != ''">
+			TEMP_MIN= #{tempMin },
+			</if>
+			<if test="tempMax != null and tempMax != ''">
+			TEMP_MAX= #{tempMax },
+			</if>
+			<if test="nh3Min != null and nh3Min != ''">
+			NH3_MIN= #{nh3Min },
+			</if>
+			<if test="nh3Max != null and nh3Max != ''">
+			NH3_MAX= #{nh3Max },
+			</if>
+			<if test="humMin != null and humMin != ''">
+			HUM_MIN= #{humMin },
+			</if>
+			<if test="humMax != null and humMax != ''">
+			HUM_MAX= #{humMax },
+			</if>
+			<if test="windMin != null and windMin != ''">
+			WIND_MIN= #{windMin },
+			</if>
+			<if test="windMax != null and windMax != ''">
+			WIND_MAX= #{windMax },
+			</if>
+		</trim> 
+		WHERE 
+			FARM_NO = #{farmNo }
+			AND EQPMN_TY_CODE = #{eqpmnTyCode }
+			AND EQPMN_NO = #{eqpmnNo }
+    </update>
+
+    <insert id="insertTnNticInfo" parameterType="egovMap" >
+      <selectKey keyProperty="maxSn" resultType="int" order="BEFORE">
+      	SELECT MAX(SN)+1 AS MAX_SN FROM TN_NTIC_INFO
+      </selectKey>
+		INSERT INTO TN_NTIC_INFO (
+			SN,
+			FARM_NO, 
+			EVT_TY, 
+			EVT_OCCR_DT, 
+			SND_DT, 
+			SND_MSG, 
+			RCV_ID, 
+			RCV_NM, 
+			RCV_PHONE_NO
+		) VALUES (
+			#{maxSn},
+			#{farmNo}, 
+			#{evtTy}, 
+			#{evtOccrDt}, 
+			#{sndDt}, 
+			#{sndMsg}, 
+			#{rcvId}, 
+			#{rcvNm}, 
+			#{rcvPhoneNo}
+		) 
+    </insert>
+
+	<!-- 알람 로그 검색 (목록) -->
+    <select id="selectTnNticInfo" parameterType="egovMap" resultType="egovMap">
+		SELECT
+		  @ROWNUM := @ROWNUM + 1 AS NO, -- 가상번호
+		  TA.*
+		FROM (
+			SELECT 
+				T1.FARM_NO, 
+				T3.FARM_NM,
+				T1.EVT_TY, 
+				T2.VAL AS EVT_TY_NM,
+				DATE_FORMAT(T1.EVT_OCCR_DT, '%Y-%m-%d') AS EVT_OCCR_DT,
+				DATE_FORMAT(T1.SND_DT, '%Y-%m-%d') AS SND_DT,
+				T1.SND_MSG, 
+				T1.RCV_ID AS USER_ID, 
+				T1.RCV_NM AS USER_NM, 
+				T1.RCV_PHONE_NO AS PHONE_NO 
+			FROM TN_NTIC_INFO T1
+			LEFT JOIN TN_CODE_INFO T2 ON T2.GID = '알람유형' AND T1.EVT_TY = T2.ID
+			, TN_PIG_FARM T3
+			, (SELECT @rownum :=0) AS R
+			WHERE 
+				T1.FARM_NO = T3.FARM_NO
+				<if test="farmNo != null and farmNo != ''">
+				AND T1.FARM_NO = #{farmNo}
+				</if>
+				<if test="evtTy != null and evtTy != ''">
+				AND T1.EVT_TY = #{evtTy }
+				</if>
+				<if test="startDt != null and startDt != '' and endDt != null and endDt != ''">
+				AND T1.SND_DT BETWEEN STR_TO_DATE(#{startDt}, '%Y-%m-%d') AND STR_TO_DATE(#{endDt}, '%Y-%m-%d')
+				</if>
+		) TA
+		ORDER BY NO DESC
+    </select>
+      
+</mapper>

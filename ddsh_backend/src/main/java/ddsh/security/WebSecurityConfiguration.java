@@ -39,10 +39,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/static/**")
 			.antMatchers("/images/**")
 			.antMatchers("/css/**")
-			.antMatchers("/js/**")
-			.antMatchers("/login")
-			.antMatchers("/logout")
-			;
+			.antMatchers("/js/**");
 	}
 	
 	@Override
@@ -65,13 +62,22 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/").permitAll()
 
 			// .antMatchers("/**").permitAll() // 처음 UI디자인시 인증 무시
-			.antMatchers("/login").permitAll()
+			.antMatchers("/login.do").permitAll()
+
+			.antMatchers("/mesureInfo.do").permitAll()  // 측정센서 정보
+			.antMatchers("/ventlInfo.do").permitAll()   // 환기팬 정보
+			.antMatchers("/weatherInfo.do").permitAll() // 기상대 정보
 
 			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-			.antMatchers("/error").permitAll()
+			.antMatchers("/error/403.do").permitAll()
+			.antMatchers("/error/404.do").permitAll()
+			.antMatchers("/error/500.do").permitAll()
 			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
 			.antMatchers("/admin/").hasAuthority("ROLE_ADMIN")
+			.antMatchers("/admin/user_list.do").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
+			.antMatchers("/admin/user_save.do").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
+			.antMatchers("/admin/equip_list.do").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
 			.antMatchers("/alarm/").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
 			.antMatchers("/board/").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
 			.antMatchers("/anal/").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
@@ -87,16 +93,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 			.and()
 				.logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout.do"))
 				.logoutSuccessUrl("/")
 				.invalidateHttpSession(true)
 				;
 
 		http.logout()
-			.logoutUrl("/logout")
+			.logoutUrl("/logout.do")
 			.logoutSuccessUrl("/");
 		
-		http.exceptionHandling().accessDeniedPage("/");
+		http.exceptionHandling().accessDeniedPage("/login.do");
 
 		// JWT Token 적용
 		http.apply(new JwtTokenFilterConfiguration(jwtTokenProvider));

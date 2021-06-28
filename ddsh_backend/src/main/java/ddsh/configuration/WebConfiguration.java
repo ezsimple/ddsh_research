@@ -1,17 +1,19 @@
-package ddsh.config;
+package ddsh.configuration;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import io.mkeasy.resolver.CommandMapArgumentResolver;
+import io.mkeasy.webapp.processor.ExcelFactory;
+import io.mkeasy.webapp.processor.FileFactory;
 import lombok.extern.slf4j.Slf4j;
 import ddsh.security.LoginInterceptor;
 
@@ -33,14 +35,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 			.addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 	
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry
-                .addMapping("/api/**")
-                .allowedOrigins("http://localhost:7000")
-        ;
-    }
-	
 	@Bean
 	LoginInterceptor loginInterceptor() {
 		return new LoginInterceptor();
@@ -50,44 +44,23 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(loginInterceptor())
 		.addPathPatterns("/**")
-		.excludePathPatterns("/"
-							,"/static/**"
-							,"/webjars/**"
-							,"/login"
-							,"/logout"
-							,"/error"
-							,"/hello"
-							// -- for React frontend ----------
-							,"/index.html"
-							,"/favicon.ico"
-							,"/service-worker.js"
-							,"/precache-manifest.*"
-							)
-							;
+		.excludePathPatterns("/","/static/**","/webjars/**","/login.do","/logout.do","/index*.do","/error/*.do")
+		.excludePathPatterns("/mesureInfo.do", "/ventlInfo.do", "/weatherInfo.do"); // (주의) : Iot 연동 허용
 	}
 
-//  @Value("${upload.dir}")
-//	private String UPLOAD_DIR;
+    @Value("${upload.dir}")
+	private String UPLOAD_DIR;
 
-//	@Bean
-//	public FileFactory fileFactory() {
-//		FileFactory bean = new FileFactory();
-//		// bean.setUploadDir(UPLOAD_DIR);
-//		return bean;
-//	}
+	@Bean
+	public FileFactory fileFactory() {
+		FileFactory bean = new FileFactory();
+		bean.setUploadDir(UPLOAD_DIR);
+		return bean;
+	}
 
-//	@Bean
-//	public ExcelFactory excelFactory() {
-//		return new ExcelFactory();
-//	}
-
-	@Value("${spring.data.mongodb.host}")
-    String host;
-
-	@Value("${spring.data.mongodb.port}")
-	int port;
-
-	@Value("${spring.data.mongodb.database}")
-	String dataBase;
+	@Bean
+	public ExcelFactory excelFactory() {
+		return new ExcelFactory();
+	}
 
 }

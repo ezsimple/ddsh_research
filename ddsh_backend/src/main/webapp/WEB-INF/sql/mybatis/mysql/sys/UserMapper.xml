@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="newgov.userMapper">
+
+    <select id="selectTnUserInfo" parameterType="EgovMap" resultType="EgovMap">
+    	SELECT T1.SN, T1.ID, T1.NM, T1.AUTHOR_CODE, 
+    		CASE
+				WHEN T1.AUTHOR_CODE = 'ROLE_ADMIN' THEN '관리자'
+				WHEN T1.AUTHOR_CODE = 'ROLE_RESEARCH' THEN '연구자'
+				ELSE '사용자'
+			END AS AUTHOR_CODE_NM,
+    		T1.PASSWORD, T1.NM, T1.TELNO, 
+    		T1.MOBLPHON_NO, T1.ADRES_CODE, T1.ADRES_DETAIL, 
+    		T1.FARM_NO, 
+    		T2.FARM_NM,
+    		T1.USE_YN, 
+    		CASE
+				WHEN T1.USE_YN = 'Y' THEN '활성'
+				ELSE '미활성'
+			END AS USE_YN_NM,
+    		T1.REGISTER_ID, DATE_FORMAT(T1.REGIST_DT, '%Y-%m-%d') AS REGIST_DT, 
+    		T1.UPDUSR_ID, DATE_FORMAT(T1.UPDT_DT, '%Y-%m-%d') AS UPDT_DT 
+		FROM TN_USER_INFO T1
+		LEFT JOIN TN_PIG_FARM T2 ON T1.FARM_NO = T2.FARM_NO
+		WHERE 1=1
+			<if test="sn != null and sn != ''">
+			AND T1.SN = #{sn}
+			</if>
+			<if test="username != null and username != ''">
+			AND T1.ID = #{username}
+			</if>
+			<if test="farmNo != null and farmNo != ''">
+			AND T1.FARM_NO = #{farmNo}
+			</if>
+			<if test="authorCode != null and authorCode != ''">
+			AND T1.AUTHOR_CODE = #{authorCode}
+			</if>
+			<if test="useYn != null and useYn != ''">
+			AND T1.USE_YN = #{useYn}
+			</if>
+		ORDER BY T1.SN DESC
+    </select>
+
+    <insert id="insertTnUserInfo" parameterType="EgovMap" >
+        <selectKey keyProperty="maxSn" resultType="EgovMap" order="BEFORE">
+            SELECT (MAX(SN) + 1) AS MAX_SN FROM TN_USER_INFO
+        </selectKey>
+   		INSERT INTO TN_USER_INFO (
+			SN, ID, AUTHOR_CODE, PASSWORD, 
+			NM, TELNO, MOBLPHON_NO, 
+			ADRES_CODE, ADRES_DETAIL, FARM_NO, USE_YN, 
+			REGISTER_ID, REGIST_DT, UPDUSR_ID, UPDT_DT
+		) VALUES (
+			#{maxSn}, #{username}, #{authorCode}, #{password}, #{nm}, #{telno}, #{moblphonNo}, 
+			#{adresCode}, #{adresDetail}, #{farmNo}, 'Y', 
+			#{userId}, NOW(), #{userId}, NOW()
+		) 
+    </insert>
+    
+    <update id="updateTnUserInfo" parameterType="EgovMap">
+		UPDATE TN_USER_INFO SET 
+			<if test="authorCode != null and authorCode != ''">
+			AUTHOR_CODE= #{authorCode}, 
+			</if>
+			<if test="password != null and password != ''">
+			PASSWORD= #{password}, 
+			</if>
+			<if test="nm != null and nm != ''">
+			NM= #{nm}, 
+			</if>
+			<if test="telno != null and telno != ''">
+			TELNO= #{telno}, 
+			</if>
+			<if test="moblphonNo != null and moblphonNo != ''">
+			MOBLPHON_NO= #{moblphonNo}, 
+			</if>
+			<if test="adresCode != null and adresCode != ''">
+			ADRES_CODE= #{adresCode}, 
+			</if>
+			<if test="adresDetail != null and adresDetail != ''">
+			ADRES_DETAIL= #{adresDetail}, 
+			</if>
+			<if test="farmNo != null and farmNo != ''">
+			FARM_NO= #{farmNo}, 
+			</if>
+			<if test="useYn != null and useYn != ''">
+			USE_YN= #{useYn}, 
+			</if>
+			UPDUSR_ID= #{userId}, 
+			UPDT_DT= NOW()
+		WHERE 1=0
+			<if test="sn != null and sn != ''">
+			OR SN = #{sn}
+			</if>
+			<if test="username != null and username != ''">
+			OR ID = #{username}
+			</if>
+    </update>
+
+    <update id="deleteTnMesureInfo" parameterType="EgovMap">
+		UPDATE TN_USER_INFO
+			SET USE_YN = 'N' 
+		WHERE 1=0
+			<if test="sn != null and sn != ''">
+			OR SN = #{sn}
+			</if>
+			<if test="username != null and username != ''">
+			OR ID = #{username}
+			</if>
+    </update>
+
+</mapper>

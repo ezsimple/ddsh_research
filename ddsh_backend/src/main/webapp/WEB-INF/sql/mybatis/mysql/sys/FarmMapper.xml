@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  
+*******************************************************************************
+  돈사환기 : 관리자/농장관리
+*******************************************************************************/
+-->
+<mapper namespace="newgov.farmMapper">
+
+    <update id="deleteTnPigFarm" parameterType="egovMap" >
+    	UPDATE TN_PIG_FARM 
+    	SET USE_YN = 'N'
+    	WHERE FARM_NO = #{farmNo}
+    </update>
+
+    <update id="updateTnPigFarm" parameterType="egovMap" >
+		UPDATE TN_PIG_FARM
+		SET 
+			<if test="farmNo != null and farmNo != ''">
+			FARM_NO= #{farmNo}, 
+			</if>
+			<if test="farmNm != null and farmNm != ''">
+			FARM_NM= #{farmNm}, 
+			</if>
+			<if test="farmKnd != null and farmKnd != ''">
+			FARM_KND= #{farmKnd }, 
+			</if>
+			<if test="adresCode != null and adresCode != ''">
+			ADRES_CODE= #{adresCode }, 
+			</if>
+			<if test="adresDetail != null and adresDetail != ''">
+			ADRES_DETAIL= #{adresDetail }, 
+			</if>
+			<if test="tlphonNo != null and tlphonNo != ''">
+			TLPHON_NO= #{tlphonNo }, 
+			</if>
+			<if test="rm != null and rm != ''">
+			RM= #{rm }, 
+			</if>
+			<if test="useYn != null and useYn != ''">
+			USE_YN= #{useYn }, 
+			</if>
+			<if test="almUseYn != null and almUseYn != ''">
+			ALM_USE_YN= #{almUseYn }, 
+			</if>
+			UPDUSR_ID= #{userId }, 
+			UPDT_DT= NOW()
+		WHERE 
+			FARM_NO = #{farmNo}
+    </update>
+
+    <insert id="insertTnPigFarm" parameterType="egovMap" >
+      <selectKey keyProperty="maxSn" resultType="int" order="BEFORE">
+      	SELECT MAX(SN)+1 AS MAX_SN FROM TN_PIG_FARM
+      </selectKey>
+		  INSERT INTO TN_PIG_FARM (
+			  SN,
+			  FARM_NO, 
+			  <if test="farmNm != null and farmNm != ''">
+			  FARM_NM, 
+			  </if>
+			  <if test="farmKnd != null and farmKnd != ''">
+			  FARM_KND, 
+			  </if>
+			  <if test="adresCode != null and adresCode != ''">
+			  ADRES_CODE, 
+			  </if>
+			  <if test="adresDetail != null and adresDetail != ''">
+			  ADRES_DETAIL, 
+			  </if>
+			  <if test="tlphonNo != null and tlphonNo != ''">
+			  TLPHON_NO, 
+			  </if>
+			  REGIST_DT, 
+			  REGISTER_ID, 
+			  <if test="rm != null and rm != ''">
+			  RM, 
+			  </if>
+			  USE_YN,
+			  ALM_USE_YN
+		  ) 
+		  VALUES 
+		  ( 
+			  #{maxSn},
+			  #{maxSn}, -- 농장번호 할당 체계가 없군요. 
+			  <if test="farmNm != null and farmNm != ''">
+			  #{farmNm}, 
+			  </if>
+			  <if test="farmKnd != null and farmKnd != ''">
+			  #{farmKnd}, 
+			  </if>
+			  <if test="adresCode != null and adresCode != ''">
+			  #{adresCode}, 
+			  </if>
+			  <if test="adresDetail != null and adresDetail != ''">
+			  #{adresDetail}, 
+			  </if>
+			  <if test="tlphonNo != null and tlphonNo != ''">
+			  #{tlphonNo}, 
+			  </if>
+			  NOW(),
+			  #{userId},
+			  <if test="rm != null and rm != ''">
+			  #{rm}, 
+			  </if>
+			  'Y',
+			  'Y'
+		  )
+    </insert>
+
+    <select id="selectTnPigFarm" parameterType="egovMap" resultType="egovMap">
+       SELECT 
+       	 SN, FARM_NO, FARM_NM, FARM_KND, ADRES_CODE, ADRES_DETAIL, TLPHON_NO, 
+       	 DATE_FORMAT(REGIST_DT, '%Y-%m-%d') AS REGIST_DT, 
+       	 REGISTER_ID, 
+       	 DATE_FORMAT(UPDT_DT, '%Y-%m-%d') AS UPDT_DT, 
+       	 UPDUSR_ID, RM, USE_YN, ALM_USE_YN
+       FROM TN_PIG_FARM
+       WHERE 1=1
+       	 <if test="excludefarmNo != null and excludefarmNo != ''">
+         AND FARM_NO != #{excludefarmNo }
+       	 </if>
+       	 <if test="farmNo != null and farmNo != ''">
+         AND FARM_NO = #{farmNo }
+       	 </if>
+       	 <if test="sn != null and sn != ''">
+         AND SN = #{sn }
+       	 </if>
+       	 <if test="useYn != null and useYn != ''">
+       	 AND USE_YN = #{useYn }
+       	 </if>
+       ORDER BY FARM_NO ASC -- 농장번호순서로 정렬 요청. @2021.06.09
+	</select>
+
+    <select id="findFarmUserInfo" parameterType="egovMap" resultType="egovMap">
+    	SELECT 
+    		T1.FARM_NO, 
+    		T1.FARM_NM, 
+    		T2.ID AS USER_ID, 
+    		T2.NM AS USER_NM, 
+    		T2.MOBLPHON_NO AS PHONE_NO
+		FROM TN_PIG_FARM T1, TN_USER_INFO T2
+		WHERE 
+			T1.FARM_NO = T2.FARM_NO
+			AND T1.FARM_NO = #{farmNo }
+			<if test="userId != null and userId != ''">
+			AND T2.ID = #{userId }
+			</if>
+    </select>
+      
+</mapper>

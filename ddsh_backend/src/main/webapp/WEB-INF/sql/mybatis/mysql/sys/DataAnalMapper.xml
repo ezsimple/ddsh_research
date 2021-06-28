@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  
+*******************************************************************************
+  돈사환기 : 자료분석
+*******************************************************************************/
+-->
+<mapper namespace="newgov.dataAnalMapper">
+
+	<!-- 선택장치정보 -->
+    <select id="selectVwEqpmnManage" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			FARM_NO,
+			FARM_NM,
+			EQPMN_TY_CODE,
+			EQPMN_NO,
+			EQPMN_NM,
+			FARM_LC,
+			LOC_CD,
+			LOC_CD_NM,
+			IN_OUT,
+			IN_OUT_NM
+		FROM 
+			VW_EQPMN_MANAGE
+		WHERE
+			FARM_NO = #{farmNo }
+			AND EQPMN_TY_CODE = #{eqpmnTyCode }
+			AND EQPMN_NO = #{eqpmnNo }    	
+    </select>
+
+	<!-- 절감율 -->
+    <select id="selectTnMesureSaveRatio" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			DATE_FORMAT(A.MESURE_DT, '%Y-%m-%d %H:%i:%s') AS MESURE_DT,
+			DATE_FORMAT(A.MESURE_DT, #{dateFormat}) AS FORMAT_DT,
+			A.FARM_NO AS FARM_NO,
+			A.FARM_NM AS FARM_NM,
+			A.LOC_CD_NM AS LOC_CD_NM,
+			IFNULL(ROUND(AVG(A.IN_NH3),0),0) AS IN_NH3, 
+			IFNULL(ROUND(AVG(A.OUT_NH3),0),0) AS OUT_NH3, 
+			IFNULL((ROUND(AVG(A.IN_NH3),0) - ROUND(AVG(A.OUT_NH3),0)),0) AS SUB_NH3,
+			IFNULL((((ROUND(AVG(A.IN_NH3),0) - ROUND(AVG(A.OUT_NH3),0)) / ROUND(AVG(A.IN_NH3),0)) * 100),0) AS RATIO_NH3
+		FROM 
+			TN_MESURE_SAVE_RATIO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.MESURE_DT
+				BETWEEN STR_TO_DATE( #{startDt} , '%Y-%m-%d') 
+				AND STR_TO_DATE( #{endDt} , '%Y-%m-%d') 
+		<include refid="groupBy"><property name="periodType" value="${periodType}" /></include>
+		ORDER BY A.MESURE_DT DESC
+	</select>
+
+    <select id="aggregateTnMesureSaveRatio" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			'평균' AS FORMAT_DT,
+			IFNULL(ROUND(AVG(A.IN_NH3),3),0) AS IN_NH3, 
+			IFNULL(ROUND(AVG(A.OUT_NH3),3),0) AS OUT_NH3, 
+			IFNULL((ROUND(AVG(A.IN_NH3),3) - ROUND(AVG(A.OUT_NH3),3)),0) AS SUB_NH3,
+			IFNULL((((ROUND(AVG(A.IN_NH3),3) - ROUND(AVG(A.OUT_NH3),3)) / ROUND(AVG(A.IN_NH3),3)) * 100),0) AS RATIO_NH3
+		FROM 
+			TN_MESURE_SAVE_RATIO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.MESURE_DT
+				BETWEEN STR_TO_DATE( #{startDt} , '%Y-%m-%d') 
+				AND STR_TO_DATE( #{endDt} , '%Y-%m-%d') 
+    </select>
+
+	<!-- 온도(AT02), 습도(AT03), 암모니아(AT04) -->
+    <select id="selectTnMesureInfo" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			DATE_FORMAT(A.MESURE_DT, '%Y-%m-%d %H:%i:%s') AS MESURE_DT,
+			DATE_FORMAT(A.MESURE_DT, #{dateFormat}) AS FORMAT_DT,
+			A.FARM_NO,
+			A.FARM_NM,
+			A.EQPMN_TY_CODE,
+			A.EQPMN_NO,
+			A.EQPMN_NM,
+			IFNULL(AVG(A.TP),0) AS TP,
+			IFNULL(AVG(A.HD),0) AS HD,
+			IFNULL(AVG(A.NH3),0) AS NH3,
+			A.FARM_LC,
+			A.LOC_CD,
+			A.LOC_CD_NM,
+			A.IN_OUT
+		FROM
+			VW_MESURE_INFO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+			AND A.MESURE_DT
+				BETWEEN STR_TO_DATE( #{startDt} , '%Y-%m-%d') 
+				AND STR_TO_DATE( #{endDt} , '%Y-%m-%d') 
+		<include refid="groupBy"><property name="periodType" value="${periodType}" /></include>
+		ORDER BY A.FARM_NO, A.EQPMN_NO
+	</select>
+
+    <select id="aggregateTnMesureInfo" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			'평균' AS FORMAT_DT,
+			IFNULL(AVG(A.TP),0) AS TP,
+			IFNULL(AVG(A.HD),0) AS HD,
+			IFNULL(AVG(A.NH3),0) AS NH3
+		FROM
+			VW_MESURE_INFO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+			AND A.MESURE_DT
+				BETWEEN STR_TO_DATE( #{startDt} , '%Y-%m-%d') 
+				AND STR_TO_DATE( #{endDt} , '%Y-%m-%d') 
+    </select>
+
+	<!-- 환기량(AT05) -->
+    <select id="selectTnVentlInfo" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			DATE_FORMAT(A.MESURE_DT, '%Y-%m-%d %H:%i:%s') AS MESURE_DT,
+			DATE_FORMAT(A.MESURE_DT, #{dateFormat}) AS FORMAT_DT,
+			A.FARM_NO,
+			A.FARM_NM,
+			A.EQPMN_TY_CODE,
+			A.EQPMN_NO,
+			A.EQPMN_NM,
+			IFNULL(AVG(A.TP),0) AS TP,
+			IFNULL(AVG(A.VENTLQY1),0) AS VENTLQY1,
+			IFNULL(AVG(A.VENTLQY2),0) AS VENTLQY2,
+			IFNULL(AVG(A.VENTLQY3),0) AS VENTLQY3,
+			A.FARM_LC,
+			A.LOC_CD,
+			A.LOC_CD_NM,
+			A.IN_OUT
+		FROM
+			VW_VENTL_INFO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+			AND A.MESURE_DT
+				BETWEEN STR_TO_DATE( #{startDt} , '%Y-%m-%d') 
+				AND STR_TO_DATE( #{endDt} , '%Y-%m-%d') 
+		<include refid="groupBy"><property name="periodType" value="${periodType}" /></include>
+		ORDER BY A.FARM_NO, A.EQPMN_NO
+	</select>
+
+    <select id="aggregateTnVentlInfo" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			'평균' AS FORMAT_DT,
+			IFNULL(AVG(A.TP),0) AS TP,
+			IFNULL(AVG(A.VENTLQY1),0) AS VENTLQY1,
+			IFNULL(AVG(A.VENTLQY2),0) AS VENTLQY2,
+			IFNULL(AVG(A.VENTLQY3),0) AS VENTLQY3
+		FROM
+			VW_VENTL_INFO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+			AND A.MESURE_DT
+				BETWEEN STR_TO_DATE( #{startDt} , '%Y-%m-%d') 
+				AND STR_TO_DATE( #{endDt} , '%Y-%m-%d') 
+    </select>
+
+	<!-- 풍향(AT06), 풍속(AT07) -->
+    <select id="selectTnWeatherInfo" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			DATE_FORMAT(A.MESURE_DT, '%Y-%m-%d %H:%i:%s') AS MESURE_DT,
+			DATE_FORMAT(A.MESURE_DT, #{dateFormat}) AS FORMAT_DT,
+			A.FARM_NO,
+			A.FARM_NM,
+			A.EQPMN_TY_CODE,
+			A.EQPMN_NO,
+			A.EQPMN_NM,
+			IFNULL(AVG(A.TP),0) AS TP,
+			IFNULL(AVG(A.HD),0) AS HD,
+			IFNULL(AVG(A.NH3),0) AS NH3,
+			A.WS AS WS,
+			A.WD AS WD,
+			A.WD_NM AS WD_NM,
+			A.WD_EN_NM AS WD_EN_NM,
+			A.FARM_LC,
+			A.LOC_CD,
+			A.LOC_CD_NM,
+			A.IN_OUT
+		FROM
+			VW_WEATHER_INFO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+			AND A.MESURE_DT
+				BETWEEN STR_TO_DATE( #{startDt} , '%Y-%m-%d') 
+				AND STR_TO_DATE( #{endDt} , '%Y-%m-%d') 
+		<include refid="groupBy"><property name="periodType" value="${periodType}" /></include>
+		ORDER BY A.FARM_NO, A.EQPMN_NO
+	</select>
+
+    <select id="aggregateTnWeatherInfo" parameterType="egovMap" resultType="egovMap">
+		SELECT 
+			'평균' AS FORMAT_DT,
+			IFNULL(AVG(A.TP),0) AS TP,
+			IFNULL(AVG(A.HD),0) AS HD,
+			IFNULL(AVG(A.NH3),0) AS NH3,
+			IFNULL(AVG(A.WS),0) AS WS
+		FROM
+			VW_WEATHER_INFO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+			AND A.MESURE_DT
+				BETWEEN STR_TO_DATE( #{startDt} , '%Y-%m-%d') 
+				AND STR_TO_DATE( #{endDt} , '%Y-%m-%d') 
+    </select>
+
+    <delete id="truncateTnMesureSaveRatio" parameterType="egovMap">
+    	TRUNCATE TN_MESURE_SAVE_RATIO
+    </delete>
+    <insert id="insertTnMesureSaveRatio" parameterType="egovMap" >
+		INSERT INTO 
+			TN_MESURE_SAVE_RATIO	
+		SELECT A.MESURE_DT, 
+			A.NH3 AS IN_NH3, 
+			A.FARM_NO AS FARM_NO,
+			A.FARM_NM AS FARM_NM,
+			A.LOC_CD_NM AS LOC_CD_NM,
+			B.NH3 AS OUT_NH3
+		FROM 
+		(
+			SELECT *
+			FROM VW_MESURE_INFO T1
+			WHERE T1.IN_OUT = '1'
+		) A,
+		(
+			SELECT *
+			FROM VW_MESURE_INFO T1
+			WHERE T1.IN_OUT = '2'
+		) B
+		WHERE A.FARM_NO = B.FARM_NO
+		AND A.EQPMN_TY_CODE = B.EQPMN_TY_CODE
+		AND A.MESURE_DT = B.MESURE_DT
+    </insert>
+
+    <select id="selectWindRoseInfo" parameterType="egovMap" resultType="egovMap">
+		SELECT A.WD_EN_NM, A.WS 
+		FROM 
+			VW_WEATHER_INFO A
+		WHERE 
+			A.FARM_NO = #{farmNo }
+			AND A.EQPMN_NO = #{eqpmnNo }
+			AND A.MESURE_DT
+				BETWEEN STR_TO_DATE( #{startDt} , '%Y-%m-%d %H:%i:%s') 
+				AND STR_TO_DATE( #{endDt} , '%Y-%m-%d %H:%i:%s') 
+    </select>
+
+	<sql id="groupBy">
+		GROUP BY 
+			YEAR(A.MESURE_DT)
+			<choose>
+				<when test="periodType == 'PT05'">
+				,MONTH(A.MESURE_DT) -- 월단위(평균)
+				</when>
+				<otherwise>
+					,MONTH(A.MESURE_DT) -- 일단위(평균)
+					<choose>
+						<when test="periodType == 'PT04'">
+						,DAYOFMONTH(A.MESURE_DT)
+						</when>
+						<otherwise>
+							,DAYOFMONTH(A.MESURE_DT)
+							<choose>
+								<when test="periodType == 'PT03'">
+									,FLOOR(HOUR(A.MESURE_DT)/12)
+								</when>
+								<otherwise>
+									,HOUR(A.MESURE_DT)
+									<if test="periodType == 'PT01'">
+									, FLOOR(MINUTE(A.MESURE_DT)/10) -- 10분 단위
+									</if>
+									<if test="periodType == 'PT02'">
+									, FLOOR(MINUTE(A.MESURE_DT)/60) -- 1시간 단위
+									</if>
+								</otherwise>
+							</choose>
+						</otherwise>
+					</choose>
+
+				</otherwise>
+			</choose>
+	</sql>
+      
+</mapper>
