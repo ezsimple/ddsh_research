@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ddsh.abnormalMapper">
+
+	<!-- 비정상행동 감지 기록 -->
+    <insert id="insertAbnlBhvdTb" parameterType="EgovMap" >
+   		INSERT INTO ABNL_BHVD_TB
+		(
+			FARM_NO, 
+			EQPMN_NO, 
+			VIDEO_NO, 
+			DETECT_DT, 
+			VIDEO_LENG, 
+			VIDEO_URI, 
+			ACTIVITY_CD, 
+			ACTIVITY_CNT
+		) 
+		VALUES 
+		(
+			#{farmNo}, 
+			#{eqpmnNo}, 
+			#{videoNo}, 
+			STR_TO_DATE( #{detectDt} , '%Y-%m-%d %H:%i:%s'),
+			#{videoLeng},
+			#{videoUri},
+			#{activityCd}, 
+			#{activityCnt}
+		}
+    </insert>
+
+
+</mapper>

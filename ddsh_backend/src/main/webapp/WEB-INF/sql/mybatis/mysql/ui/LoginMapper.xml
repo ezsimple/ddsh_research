@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="newgov.userMapper">
+<mapper namespace="ddsh.loginMapper">
 
     <select id="selectTnUserInfo" parameterType="EgovMap" resultType="EgovMap">
     	SELECT T1.SN, T1.ID, T1.NM, T1.AUTHOR_CODE, 

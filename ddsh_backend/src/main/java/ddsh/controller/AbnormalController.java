@@ -20,9 +20,13 @@ public class AbnormalController {
 	
 	@ResponseBody
 	@RequestMapping("/abnormal/{farmNo}/{eqpmnNo}/{videoNo}")
-	public String save(@PathVariable("farmNo") String farmNo, @PathVariable("eqpmnNo") String eqpmnNo, @PathVariable("videoNo") String videoNo,
-			CommandMap commandMap) {
-		commandMap.debugParams();
+	public String save(@PathVariable("farmNo") String farmNo, 
+			@PathVariable("eqpmnNo") String eqpmnNo, 
+			@PathVariable("videoNo") String videoNo,
+			CommandMap commandMap) throws Exception {
+
+		log.debug("/abnormal/{}/{}/{}.{}",farmNo,eqpmnNo,videoNo,commandMap.getMap().toString());
+
 		return abnormalService.insert(farmNo, eqpmnNo, videoNo, commandMap);
 	}
 
