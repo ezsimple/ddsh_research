@@ -25,7 +25,7 @@ public class AbnormalController {
 			@PathVariable("videoNo") String videoNo,
 			CommandMap commandMap) throws Exception {
 
-		log.debug("/abnormal/{}/{}/{}.{}",farmNo,eqpmnNo,videoNo,commandMap.getMap().toString());
+		log.debug("/abnormal/{}/{}/{}?{}",farmNo,eqpmnNo,videoNo,commandMap.getMap().toString());
 
 		return abnormalService.insert(farmNo, eqpmnNo, videoNo, commandMap);
 	}
