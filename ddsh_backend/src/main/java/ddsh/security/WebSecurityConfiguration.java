@@ -28,15 +28,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 	
-	// @Value("${spring.session.maximum}")
-	// private int maximumSessions = 10;
-	
 	// @EnableWebSecurity 추가하면 css, js 로딩 안되는 문제점 보완
 	@Override
 	public void configure(WebSecurity web) throws Exception {
+		log.debug("{}", web.toString());
 		web.ignoring()
-			.antMatchers("/webjars/**")
+			.antMatchers("/resources/**")
 			.antMatchers("/static/**")
+			.antMatchers("/webjars/**")
 			.antMatchers("/images/**")
 			.antMatchers("/css/**")
 			.antMatchers("/js/**");
@@ -52,7 +51,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		http.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-		;
+			;
 
 		// .maximumSessions(maximumSessions) // 
 		// .expiredUrl("/logout.do")
@@ -60,55 +59,44 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests()
 			.antMatchers("/").permitAll()
-
 			// .antMatchers("/**").permitAll() // 처음 UI디자인시 인증 무시
-			.antMatchers("/login.do").permitAll()
-
-			.antMatchers("/mesureInfo.do").permitAll()  // 측정센서 정보
-			.antMatchers("/ventlInfo.do").permitAll()   // 환기팬 정보
-			.antMatchers("/weatherInfo.do").permitAll() // 기상대 정보
+			.antMatchers("/login").permitAll()
+			.antMatchers("/api/v1/abnormal").permitAll()  // RESTful API :: 이상행동 감지 허용
 
 			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-			.antMatchers("/error/403.do").permitAll()
-			.antMatchers("/error/404.do").permitAll()
-			.antMatchers("/error/500.do").permitAll()
+			.antMatchers("/error/403").permitAll()
+			.antMatchers("/error/404").permitAll()
+			.antMatchers("/error/500").permitAll()
 			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
 			.antMatchers("/admin/").hasAuthority("ROLE_ADMIN")
-			.antMatchers("/admin/user_list.do").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
-			.antMatchers("/admin/user_save.do").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
-			.antMatchers("/admin/equip_list.do").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
-			.antMatchers("/alarm/").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
-			.antMatchers("/board/").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
-			.antMatchers("/anal/").hasAnyAuthority("ROLE_ADMIN", "ROLE_RESEARCH", "ROLE_USER")
 			
 			// ===================================
  			// RESTful 방식 로그인이므로 사용안함		
 			// ===================================
 			// .and()
 			//	.formLogin()
-			//	.loginPage("/login.do")
+			//	.loginPage("/login")
 			//	.defaultSuccessUrl("/")
 			//	.permitAll()
 
 			.and()
 				.logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout.do"))
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/")
 				.invalidateHttpSession(true)
 				;
 
 		http.logout()
-			.logoutUrl("/logout.do")
+			.logoutUrl("/logout")
 			.logoutSuccessUrl("/");
 		
-		http.exceptionHandling().accessDeniedPage("/login.do");
+		// http.exceptionHandling().accessDeniedPage("/login.do");
 
 		// JWT Token 적용
 		http.apply(new JwtTokenFilterConfiguration(jwtTokenProvider));
 
 	}
-	
 
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {

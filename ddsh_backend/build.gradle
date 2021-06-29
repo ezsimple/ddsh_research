@@ -38,7 +38,9 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-	testImplementation 'org.springframework.security:spring-security-test'
+	// testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+	implementation 'javax.servlet:jstl'
 	
 	implementation 'javax.validation:validation-api'
 	implementation 'busyUtil:busyUtil:0.9.2'
@@ -68,3 +70,18 @@ dependencies {
 test {
 	// useJUnitPlatform()
 }
+
+def frontendDir = "../ddsh_frontend"
+
+task appNpmInstall(type: NpmTask) {
+    workingDir = file("${frontendDir}")
+    args = ["run", "build"]
+}
+
+task copyWebApp(type: Copy) {
+    from "$frontendDir/build"
+    into "build/resources/main/static"
+}
+
+copyWebApp.dependsOn(appNpmInstall)
+compileJava.dependsOn(copyWebApp)

@@ -1,7 +1,6 @@
 package ddsh.security;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import ddsh.utils.PropertiesUtil;
 import io.mkeasy.utils.NetUtil;
 import lombok.extern.slf4j.Slf4j;
-import ddsh.utils.PropertiesUtil;
 
 
 @Slf4j
@@ -42,13 +41,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 		response.setHeader("X-Frame-Option", "DENY");
 		
 		String path = request.getServletPath();
-		if("/login.do".equals(path)
-				|| "/logout.do".equals(path)
-		        || "/error".equals(path)
-				|| "/".equals(path)
+		if(StringUtils.startsWith(path, "/login")
+				|| StringUtils.startsWith(path, "/logout")
+		        || StringUtils.startsWith(path, "/error")
 				|| StringUtils.startsWith(path, "/static/")
 				|| StringUtils.startsWith(path, "/webjars/")
-				|| (StringUtils.startsWith(path, "/error/") && StringUtils.endsWith(path, ".do"))
+				|| (StringUtils.startsWith(path, "/error/"))
 				) 
 			return true;
 
@@ -72,19 +70,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 	// 요청시마다 세션에 담아야하는 사용자 정의 정보들
 	private void setCustomInfoToSession(HttpSession session) {
 		if(session == null) return;
-
 		long _ms = System.currentTimeMillis();
 		LocalDateTime _now = LocalDateTime.now();
-		String _adminlte = propertiesUtil.getProperty("adminlte");
-		String _key = propertiesUtil.getProperty("download.key");
-
-		session.setAttribute("_adminlte", _adminlte);
-		session.setAttribute("_key", _key);
-		session.setAttribute("_dateFormat", "yyyy-MM-dd");
-		session.setAttribute("_now", _now.toDate());
-		session.setAttribute("_date", dateFormater.format(new Date()));
-		session.setAttribute("_year", _now.getYear());
-		session.setAttribute("_ms", _ms);
+		// String _key = propertiesUtil.getProperty("download.key");
 	}
 
 	private String getProfile() throws Exception {
@@ -104,7 +92,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter
 
 		// ezfarm 사무실에서만 접근 가능
 		if (!(StringUtils.equals(clientIp, "127.0.0.1")
-				|| StringUtils.equals(clientIp, "192.168.4"))) {
+				|| StringUtils.equals(clientIp, "192.168.4")
+				|| StringUtils.equals(clientIp, "192.168.3")
+				)) {
 			log.warn("clientIp : {} is rejected", clientIp);
 			return false;
 		}

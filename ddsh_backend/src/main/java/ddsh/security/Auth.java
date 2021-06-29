@@ -33,10 +33,10 @@ public class Auth implements Principal, UserDetails {
 	// Authorities
 	Collection<? extends GrantedAuthority> roles;
 
-	private boolean isAccountNonExpired = true;
-	private boolean isAccountNonLocked = true;
-	private boolean isCredentialsNonExpired = true;
-	private boolean isEnabled = true;
+	final boolean isAccountNonExpired = true;
+	final boolean isAccountNonLocked = true;
+	final boolean isCredentialsNonExpired = true;
+	final boolean isEnabled = true;
 
 	// Additional ... 은 사용자 정의(User extends Auth)에서 처리
 

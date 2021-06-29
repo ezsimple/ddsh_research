@@ -105,10 +105,10 @@ public class UserAuthService implements AuthRepository {
 			.password(String.valueOf(row.get("password")))
 			.roles(roles)
 			.name(String.valueOf(row.get("nm")))
-			.isAccountNonExpired(true)
-			.isAccountNonLocked(true)
-			.isCredentialsNonExpired(true)
-			.isEnabled(true)
+			// .isAccountNonExpired(true)
+			// .isAccountNonLocked(true)
+			// .isCredentialsNonExpired(true)
+			// .isEnabled(true)
 			.build();
 
 		return auth;
