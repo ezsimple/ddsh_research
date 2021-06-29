@@ -39,8 +39,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 			.setCachePeriod(3600).resourceChain(true)
 			.addResolver(new PathResourceResolver() {
 				@Override
-				protected Resource getResource(String resourcePath,
-						Resource location) throws IOException {
+				protected Resource getResource(String resourcePath, Resource location) throws IOException {
 					Resource loc = location.exists() && location.isReadable() ? location :null;
 					return loc;
 				}
