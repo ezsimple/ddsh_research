@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class AbnormalService {
 
-	// 넙치 이상행동 리보트 저장 API
+	// 넙치 이상행동 리포트 저장 API
 	public String insert(String farmNo, 
 			String eqpmnNo, 
 			String videoNo, 
